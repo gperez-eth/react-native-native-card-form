@@ -8,4 +8,4 @@
   to the private native inputs on both platforms.
 - Reject invalid native color configuration instead of silently changing it.
 - Add tarball/source completeness checks for the clean Expo example.
-- Prepare GitHub Release tarball distribution; npm publishing remains deferred.
+- Publish the `0.1.0-alpha.0` prerelease to npm under the `alpha` dist-tag.

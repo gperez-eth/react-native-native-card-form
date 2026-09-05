@@ -22,9 +22,19 @@ npm ci
 npm run build
 npm pack
 shasum -a 256 react-native-native-card-form-*.tgz
-npm publish --dry-run
+npm publish --access public --tag alpha
 ```
 
-Audit the tarball before attaching it and its checksum to a GitHub prerelease.
-Do not run `npm publish` in the initial distribution phase. Do not create a
-production release until external PCI review is approved.
+The first prerelease is published as `0.1.0-alpha.0` under the `alpha` tag:
+
+```sh
+npm view react-native-native-card-form version dist-tags --json
+```
+
+The npm token is stored only as the `NPM_TOKEN` secret in the project's EAS
+development, preview and production environments. It is not prefixed with
+`EXPO_PUBLIC_` and must never be read by application code or committed to the
+repository.
+
+Do not create a production payment release until the external PCI review is
+approved.
