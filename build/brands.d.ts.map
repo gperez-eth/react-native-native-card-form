@@ -1,1 +1,1 @@
-{"version":3,"file":"brands.d.ts","sourceRoot":"","sources":["../src/brands.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAC;AAI1B,OAAO,KAAK,EAAE,kBAAkB,EAAa,MAAM,SAAS,CAAC;AAwD7D,wBAAgB,YAAY,CAAC,EAAE,KAAK,EAAE,kBAAkB,EAAE,EAAE,kBAAkB,qBAc7E"}
+{"version":3,"file":"brands.d.ts","sourceRoot":"","sources":["../src/brands.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,OAAO,CAAC;AAI1B,OAAO,KAAK,EAAE,kBAAkB,EAAa,MAAM,SAAS,CAAC;AA8F7D,wBAAgB,YAAY,CAAC,EAAE,KAAK,EAAE,kBAAkB,EAAE,EAAE,kBAAkB,qBAc7E"}

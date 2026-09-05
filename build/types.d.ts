@@ -2,7 +2,7 @@ import type { ComponentType, ReactNode } from 'react';
 import type { StyleProp, TextStyle, ViewStyle } from 'react-native';
 export type CardField = 'number' | 'expiry' | 'cvc';
 export type CardFieldStatus = 'empty' | 'incomplete' | 'invalid' | 'valid';
-export type CardBrand = 'visa' | 'mastercard' | 'amex' | 'discover' | 'unknown';
+export type CardBrand = 'visa' | 'mastercard' | 'maestro' | 'amex' | 'discover' | 'jcb' | 'unionpay' | 'unknown';
 export interface CardFieldState {
     readonly status: CardFieldStatus;
     readonly focused: boolean;
@@ -46,6 +46,7 @@ export interface CardFieldAppearance {
     readonly inputContainerStyle?: StyleProp<ViewStyle>;
     readonly errorStyle?: StyleProp<TextStyle>;
     readonly focusedContainerStyle?: StyleProp<ViewStyle>;
+    readonly validContainerStyle?: StyleProp<ViewStyle>;
     readonly invalidContainerStyle?: StyleProp<ViewStyle>;
     readonly disabledContainerStyle?: StyleProp<ViewStyle>;
     readonly placeholderColor?: string;

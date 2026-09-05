@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import Svg, { Circle, Path, Rect } from 'react-native-svg';
+import Svg, { Circle, Path, Rect, Text as SvgText } from 'react-native-svg';
 const frame = {
     width: 44,
     height: 28,
@@ -35,11 +35,40 @@ function Discover() {
       <Path d="M33 10h2.2l1.5 5 1.5-5h2.2l-2.7 8h-2L33 10Z" fill="#172B4D"/>
     </Svg>);
 }
+function Jcb() {
+    return (<Svg width={44} height={28} viewBox="0 0 44 28">
+      <Rect width={44} height={28} rx={4} fill="#FFFFFF"/>
+      <Rect x={8} y={5} width={7} height={18} rx={2} fill="#006FBC"/>
+      <Rect x={15} y={5} width={7} height={18} rx={2} fill="#E60039"/>
+      <Rect x={22} y={5} width={7} height={18} rx={2} fill="#40A737"/>
+      <SvgText x={22} y={18} textAnchor="middle" fontSize={6} fontWeight="700" fill="#FFFFFF">JCB</SvgText>
+    </Svg>);
+}
+function UnionPay() {
+    return (<Svg width={44} height={28} viewBox="0 0 44 28">
+      <Rect width={44} height={28} rx={4} fill="#FFFFFF"/>
+      <Path d="M8 5h10l-4 18H4Z" fill="#ED171F"/>
+      <Path d="M17 5h10l-4 18H13Z" fill="#082F67"/>
+      <Path d="M26 5h9l-4 18h-9Z" fill="#006A65"/>
+      <SvgText x={25} y={20} textAnchor="middle" fontSize={5} fontWeight="700" fill="#FFFFFF">银联</SvgText>
+    </Svg>);
+}
+function Maestro() {
+    return (<Svg width={44} height={28} viewBox="0 0 44 28">
+      <Rect width={44} height={28} rx={4} fill="#FFFFFF"/>
+      <Circle cx={20} cy={14} r={8} fill="#EB001B"/>
+      <Circle cx={24} cy={14} r={8} fill="#00A2E5"/>
+      <Rect x={20} y={6} width={4} height={16} fill="#7375CF"/>
+    </Svg>);
+}
 const marks = {
     visa: Visa,
     mastercard: Mastercard,
     amex: Amex,
     discover: Discover,
+    jcb: Jcb,
+    unionpay: UnionPay,
+    maestro: Maestro,
 };
 export function DefaultBrand({ brand, accessibilityLabel }) {
     if (brand === 'unknown') {

@@ -1,6 +1,7 @@
 import { requireNativeModule, requireNativeViewManager } from 'expo-modules-core';
 import React, { forwardRef, useCallback, useEffect, useId, useImperativeHandle, useMemo, useRef, useState, } from 'react';
 import { I18nManager, StyleSheet, Text, useWindowDimensions, View, } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 import { DefaultBrand } from './brands';
 import { asNativeCardFormError } from './errors';
 const NativeModule = requireNativeModule('MackenrowNativeCard');
@@ -46,7 +47,14 @@ function Field({ field, sessionId, state, props, onNativeChange, trailing }) {
       <View style={[
             styles.inputChrome,
             appearance?.containerStyle,
-            state.focused && [styles.focused, appearance?.focusedContainerStyle],
+            state.focused && state.status === 'valid' && [
+                styles.validFocused,
+                appearance?.validContainerStyle,
+            ],
+            state.focused && state.status !== 'valid' && [
+                styles.focused,
+                appearance?.focusedContainerStyle,
+            ],
             error && [styles.invalid, appearance?.invalidContainerStyle],
             props.disabled && [styles.disabled, appearance?.disabledContainerStyle],
         ]}>
@@ -56,10 +64,18 @@ function Field({ field, sessionId, state, props, onNativeChange, trailing }) {
             { minHeight: Math.max(48, 48 * fontScale) },
         ]} textAlign={textAlign} textColor={textColor}/>
         {trailing}
+        {field !== 'number' && state.status === 'valid' ? <ValidMark /> : null}
       </View>
       {error ? (<Text accessibilityLiveRegion="polite" accessibilityRole="alert" style={[styles.error, appearance?.errorStyle]}>
           {error}
         </Text>) : null}
+    </View>);
+}
+function ValidMark() {
+    return (<View accessible={false} pointerEvents="none" style={styles.validMark}>
+      <Svg width={22} height={22} viewBox="0 0 24 24">
+        <Path d="m5 12.5 4.2 4.2L19.5 6.8" fill="none" stroke="#22C55E" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.8}/>
+      </Svg>
     </View>);
 }
 /**
@@ -182,8 +198,18 @@ const styles = StyleSheet.create({
         minHeight: 48,
         flex: 1,
     },
+    validMark: {
+        width: 24,
+        height: 24,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: 8,
+    },
     focused: {
         borderColor: '#E74949',
+    },
+    validFocused: {
+        borderColor: '#22C55E',
     },
     invalid: {
         borderColor: '#EF4444',

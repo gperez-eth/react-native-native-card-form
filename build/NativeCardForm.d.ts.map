@@ -1,1 +1,1 @@
-{"version":3,"file":"NativeCardForm.d.ts","sourceRoot":"","sources":["../src/NativeCardForm.tsx"],"names":[],"mappings":"AACA,OAAO,KASN,MAAM,OAAO,CAAC;AAcf,OAAO,KAAK,EAIV,mBAAmB,EACnB,iBAAiB,EAGlB,MAAM,SAAS,CAAC;AA4IjB;;;GAGG;AACH,eAAO,MAAM,cAAc,+FAyH1B,CAAC"}
+{"version":3,"file":"NativeCardForm.d.ts","sourceRoot":"","sources":["../src/NativeCardForm.tsx"],"names":[],"mappings":"AACA,OAAO,KASN,MAAM,OAAO,CAAC;AAef,OAAO,KAAK,EAIV,mBAAmB,EACnB,iBAAiB,EAGlB,MAAM,SAAS,CAAC;AAqKjB;;;GAGG;AACH,eAAO,MAAM,cAAc,+FAyH1B,CAAC"}
