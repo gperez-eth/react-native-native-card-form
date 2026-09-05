@@ -1,0 +1,34 @@
+{
+  "expo": {
+    "name": "NativeCardFormExample",
+    "slug": "native-card-form-example",
+    "version": "1.0.0",
+    "newArchEnabled": true,
+    "android": {
+      "package": "com.gperezeth.nativecardformexample"
+    },
+    "ios": {
+      "bundleIdentifier": "com.gperezeth.nativecardformexample"
+    },
+    "plugins": [
+      [
+        "@stripe/stripe-react-native",
+        {
+          "enableGooglePay": true,
+          "merchantIdentifier": "merchant.com.gperezeth.nativecardformexample"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 24
+          },
+          "ios": {
+            "deploymentTarget": "15.1"
+          }
+        }
+      ]
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "name": "react-native-native-card-form",
+  "version": "0.1.0-alpha.0",
+  "description": "Composable React Native card form backed by private native Stripe inputs.",
+  "license": "MIT",
+  "author": "Guillermo Pérez (gperez-eth)",
+  "maintainers": [
+    "Guillermo Pérez (gperez-eth)"
+  ],
+  "homepage": "https://github.com/gperez-eth/react-native-native-card-form#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gperez-eth/react-native-native-card-form.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gperez-eth/react-native-native-card-form/issues"
+  },
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "react-native": "src/index.ts",
+  "exports": {
+    ".": {
+      "react-native": "./src/index.ts",
+      "types": "./build/index.d.ts",
+      "default": "./build/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "android",
+    "build",
+    "docs",
+    "fixtures",
+    "ios",
+    "src",
+    "expo-module.config.json",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "expo-module build",
+    "clean": "expo-module clean",
+    "lint": "expo-module lint",
+    "prepare": "expo-module prepare",
+    "prepack": "expo-module prepare",
+    "check:validation": "node scripts/validation-fixtures.js",
+    "check:tarball": "node scripts/tarball-audit.js",
+    "verify:android": "node scripts/verify-clean-example.js android",
+    "verify:ios": "node scripts/verify-clean-example.js ios"
+  },
+  "peerDependencies": {
+    "@stripe/stripe-react-native": ">=0.56.0 <0.57.0",
+    "expo": ">=54.0.0 <55.0.0",
+    "expo-modules-core": ">=3.0.0 <4.0.0",
+    "react": ">=19.0.0 <20.0.0",
+    "react-native": ">=0.81.0 <0.82.0",
+    "react-native-svg": ">=15.0.0 <16.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/react": "~19.1.10",
+    "expo-module-scripts": "^5.0.8",
+    "typescript": "~5.9.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

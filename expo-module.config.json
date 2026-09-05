@@ -1,0 +1,10 @@
+{
+  "platforms": ["ios", "android"],
+  "apple": {
+    "modules": ["MackenrowNativeCardModule"]
+  },
+  "android": {
+    "name": "native-card-form",
+    "modules": ["com.mackenrow.nativecard.MackenrowNativeCardModule"]
+  }
+}

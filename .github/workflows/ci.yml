@@ -1,0 +1,46 @@
+name: Package CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm install
+      - run: npm run build
+      - run: npm run lint
+      - run: npm run check:validation
+      - run: npm run check:tarball
+
+  example:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-15]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm install
+      - run: npm pack
+      - run: cd example && npm install ../react-native-native-card-form-*.tgz
+      - if: runner.os == 'Linux'
+        run: cd example && npx expo prebuild --platform android --no-install && cd android && ./gradlew assembleDebug
+      - if: runner.os == 'macOS'
+        run: >-
+          cd example && npx expo prebuild --platform ios --no-install &&
+          cd ios && pod install &&
+          xcodebuild -workspace NativeCardFormExample.xcworkspace
+          -scheme NativeCardFormExample -sdk iphonesimulator
+          -destination 'generic/platform=iOS Simulator'
+          IPHONEOS_DEPLOYMENT_TARGET=15.1 CODE_SIGNING_ALLOWED=NO build

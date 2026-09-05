@@ -1,0 +1,40 @@
+{
+  "clock": { "year": 2026, "month": 9 },
+  "numbers": [
+    { "input": "", "status": "empty", "brand": "unknown" },
+    { "input": "4", "status": "incomplete", "brand": "visa" },
+    { "input": "4242 4242", "status": "incomplete", "brand": "visa" },
+    { "input": "4242 4242 4242 4242", "status": "valid", "brand": "visa" },
+    { "input": "4242 4242 4242 4241", "status": "invalid", "brand": "visa" },
+    { "input": "5555 5555 5555 4444", "status": "valid", "brand": "mastercard" },
+    { "input": "2221 0000 0000 0009", "status": "valid", "brand": "mastercard" },
+    { "input": "3782 822463 10005", "status": "valid", "brand": "amex" },
+    { "input": "6011 1111 1111 1117", "status": "valid", "brand": "discover" },
+    { "input": "6500 0000 0000 0002", "status": "valid", "brand": "discover" },
+    { "input": "6200 0000 0000 0005", "status": "valid", "brand": "unionpay" },
+    { "input": "3530 1113 3330 0000", "status": "valid", "brand": "jcb" },
+    { "input": "6759 6498 2643 8453", "status": "valid", "brand": "maestro" },
+    { "input": "1234 5678 9012 3452", "status": "valid", "brand": "unknown" },
+    { "input": "1234 5678 9012 34567890", "status": "invalid", "brand": "unknown" }
+  ],
+  "expiry": [
+    { "input": "", "status": "empty" },
+    { "input": "0", "status": "incomplete" },
+    { "input": "13", "status": "invalid" },
+    { "input": "08/26", "status": "invalid" },
+    { "input": "09/26", "status": "valid" },
+    { "input": "12/40", "status": "valid" }
+  ],
+  "cvc": [
+    { "input": "", "brand": "visa", "status": "empty" },
+    { "input": "12", "brand": "visa", "status": "incomplete" },
+    { "input": "123", "brand": "visa", "status": "valid" },
+    { "input": "1234", "brand": "visa", "status": "invalid" },
+    { "input": "123", "brand": "amex", "status": "incomplete" },
+    { "input": "1234", "brand": "amex", "status": "valid" },
+    { "input": "123", "brand": "maestro", "status": "valid" },
+    { "input": "123", "brand": "jcb", "status": "valid" },
+    { "input": "123", "brand": "unionpay", "status": "valid" },
+    { "input": "123", "brand": "unknown", "status": "valid" }
+  ]
+}
