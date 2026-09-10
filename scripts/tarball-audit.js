@@ -5,9 +5,22 @@ const path = require('node:path');
 const { execFileSync } = require('node:child_process');
 
 const root = path.resolve(__dirname, '..');
-const output = JSON.parse(
-  execFileSync('npm', ['pack', '--json', '--ignore-scripts'], { cwd: root, encoding: 'utf8' }),
-);
+const rawOutput = execFileSync('npm', ['pack', '--json', '--ignore-scripts'], {
+  cwd: root,
+  encoding: 'utf8',
+});
+// `--ignore-scripts` does not reliably suppress the `prepare` lifecycle script
+// across npm versions (observed with the npm bundled with Node 20.20.2 on
+// GitHub-hosted runners): its stdout can land ahead of the JSON payload that
+// `npm pack --json` prints. `npm pack --json`'s only output is a single
+// top-level array, always the last thing written, so slicing from the first
+// `[` discards any such leading noise without masking a genuinely malformed
+// response (a missing `[` still throws, as it should).
+const jsonStart = rawOutput.indexOf('[');
+if (jsonStart === -1) {
+  throw new Error(`npm pack --json produced no JSON array:\n${rawOutput}`);
+}
+const output = JSON.parse(rawOutput.slice(jsonStart));
 const artifact = output[0];
 const names = artifact.files.map((file) => file.path);
 const required = [
