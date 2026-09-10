@@ -1,0 +1,103 @@
+<svg width="1600" height="460" viewBox="0 0 1600 460" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0e0e16"/>
+      <stop offset="100%" stop-color="#07070b"/>
+    </linearGradient>
+
+    <radialGradient id="blobBlue" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blobPurple" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blobPink" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ec4899" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#ec4899" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blobOrange" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#f97316" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blobCyan" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="vignette" cx="50%" cy="45%" r="75%">
+      <stop offset="55%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.55"/>
+    </radialGradient>
+
+    <linearGradient id="markGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#c7cad1"/>
+    </linearGradient>
+
+    <filter id="blurHeavy" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="65"/>
+    </filter>
+    <filter id="blurSoft" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="26"/>
+    </filter>
+
+    <pattern id="grid" width="46" height="46" patternUnits="userSpaceOnUse">
+      <path d="M23 15 V31 M15 23 H31" stroke="#ffffff" stroke-opacity="0.07" stroke-width="1.4"/>
+    </pattern>
+  </defs>
+
+  <!-- base -->
+  <rect width="1600" height="460" fill="url(#bg)"/>
+
+  <!-- color field, clipped to canvas -->
+  <g filter="url(#blurHeavy)">
+    <circle cx="230" cy="520" r="330" fill="url(#blobBlue)"/>
+    <circle cx="470" cy="470" r="300" fill="url(#blobPurple)"/>
+    <circle cx="740" cy="430" r="300" fill="url(#blobPink)"/>
+    <circle cx="1010" cy="470" r="290" fill="url(#blobOrange)"/>
+    <circle cx="150" cy="120" r="240" fill="url(#blobCyan)"/>
+  </g>
+  <g filter="url(#blurSoft)" opacity="0.55">
+    <circle cx="1230" cy="90" r="150" fill="url(#blobPurple)"/>
+  </g>
+
+  <!-- crosshair grid over the whole banner -->
+  <rect width="1600" height="460" fill="url(#grid)"/>
+
+  <!-- vignette to keep text legible -->
+  <rect width="1600" height="460" fill="url(#vignette)"/>
+
+  <!-- top hairline accent -->
+  <rect x="0" y="0" width="1600" height="3" fill="#e2e2e2" opacity="0.18"/>
+
+  <!-- mark, top right: two halves = React (JS) side and native side -->
+  <g transform="translate(1452,56)">
+    <path d="M0 0 L92 0 L92 92 Z" fill="url(#markGrad)"/>
+    <path d="M0 0 L0 92 L92 92 Z" fill="#ffffff" fill-opacity="0.18"/>
+    <rect x="34" y="34" width="24" height="24" rx="5" fill="#07070b"/>
+  </g>
+
+  <!-- title -->
+  <text x="64" y="216" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+        font-size="66" font-weight="700" fill="#f5f6fa" letter-spacing="-1.5">
+    react-native-native-card-form
+  </text>
+
+  <!-- tagline -->
+  <text x="66" y="268" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+        font-size="27" font-weight="400" fill="#c7cad6">
+    Card capture that never leaves native code.
+  </text>
+
+  <!-- bottom-left signature block, echoes the "App development, done right!" caption -->
+  <text x="66" y="356" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+        font-size="24" font-weight="700" fill="#eef0f4">
+    PAN · expiry · CVC stay in private iOS &amp; Android views
+  </text>
+  <text x="66" y="390" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"
+        font-size="19" font-weight="400" fill="#9aa0ad">
+    React only ever sees validity, focus and a PaymentMethod ID
+  </text>
+</svg>

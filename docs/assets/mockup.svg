@@ -1,0 +1,105 @@
+<svg width="420" height="760" viewBox="0 0 420 760" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="phoneBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1c1d24"/>
+      <stop offset="100%" stop-color="#101116"/>
+    </linearGradient>
+    <linearGradient id="screenBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#101019"/>
+      <stop offset="100%" stop-color="#0a0a10"/>
+    </linearGradient>
+    <linearGradient id="cta" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="55%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="lockChip" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#22c55e"/>
+      <stop offset="100%" stop-color="#16a34a"/>
+    </linearGradient>
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- phone body -->
+  <g filter="url(#softShadow)">
+    <rect x="20" y="20" width="380" height="720" rx="46" fill="url(#phoneBody)"/>
+    <rect x="30" y="30" width="360" height="700" rx="38" fill="url(#screenBg)"/>
+  </g>
+
+  <!-- notch -->
+  <rect x="160" y="30" width="100" height="26" rx="13" fill="#101116"/>
+
+  <!-- status bar -->
+  <text x="58" y="78" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" fill="#f2f3f6">9:41</text>
+  <g transform="translate(296,60)">
+    <rect x="0" y="10" width="4" height="6" rx="1" fill="#f2f3f6"/>
+    <rect x="6" y="7" width="4" height="9" rx="1" fill="#f2f3f6"/>
+    <rect x="12" y="4" width="4" height="12" rx="1" fill="#f2f3f6"/>
+    <rect x="18" y="1" width="4" height="15" rx="1" fill="#f2f3f6"/>
+    <rect x="30" y="6" width="16" height="12" rx="2" fill="none" stroke="#f2f3f6" stroke-width="1.6"/>
+    <rect x="32" y="8" width="9" height="8" rx="1" fill="#f2f3f6"/>
+    <rect x="48" y="4" width="3" height="4" rx="1" fill="#f2f3f6"/>
+  </g>
+
+  <!-- header -->
+  <text x="58" y="132" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="#f5f6fa">Payment</text>
+  <text x="58" y="160" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="15" fill="#9aa0ad">Card details are entered below</text>
+
+  <!-- card number field -->
+  <text x="58" y="204" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#c7cad6">CARD NUMBER</text>
+  <rect x="56" y="216" width="308" height="56" rx="14" fill="#181923" stroke="#2a2c37" stroke-width="1.5"/>
+  <text x="76" y="251" font-family="Menlo, Consolas, monospace" font-size="20" letter-spacing="3" fill="#eef0f4">•••• •••• •••• ••••</text>
+  <g transform="translate(322,232)">
+    <rect width="26" height="26" rx="8" fill="url(#lockChip)"/>
+    <path d="M13 8.5c-2.2 0-3.6 1.5-3.6 3.6v1.2H9c-.7 0-1.2.5-1.2 1.2v5c0 .7.5 1.2 1.2 1.2h8c.7 0 1.2-.5 1.2-1.2v-5c0-.7-.5-1.2-1.2-1.2h-.4v-1.2c0-2.1-1.4-3.6-3.6-3.6zm0 1.7c1.1 0 1.9.8 1.9 1.9v1.2h-3.8v-1.2c0-1.1.8-1.9 1.9-1.9z"
+          fill="#ffffff"/>
+  </g>
+
+  <!-- expiry + cvc -->
+  <text x="58" y="304" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#c7cad6">EXPIRY</text>
+  <rect x="56" y="316" width="140" height="52" rx="14" fill="#181923" stroke="#2a2c37" stroke-width="1.5"/>
+  <text x="76" y="349" font-family="Menlo, Consolas, monospace" font-size="19" fill="#eef0f4">12 / 29</text>
+
+  <text x="224" y="304" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#c7cad6">CVC</text>
+  <rect x="224" y="316" width="140" height="52" rx="14" fill="#181923" stroke="#2a2c37" stroke-width="1.5"/>
+  <text x="244" y="349" font-family="Menlo, Consolas, monospace" font-size="19" letter-spacing="4" fill="#eef0f4">•••</text>
+
+  <!-- native-boundary chip -->
+  <rect x="56" y="392" width="308" height="34" rx="17" fill="#132018" stroke="#1e3a2a" stroke-width="1.5"/>
+  <circle cx="76" cy="409" r="5" fill="#22c55e"/>
+  <text x="90" y="414" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8fe3ab">
+    PAN never reaches JavaScript
+  </text>
+
+  <!-- brand marks -->
+  <g transform="translate(56,446)" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff">
+    <rect width="52" height="30" rx="7" fill="#1a1f71"/>
+    <text x="10" y="20">VISA</text>
+  </g>
+  <g transform="translate(116,446)">
+    <circle cx="15" cy="15" r="15" fill="#eb001b" opacity="0.9"/>
+    <circle cx="29" cy="15" r="15" fill="#f79e1b" opacity="0.85"/>
+  </g>
+  <g transform="translate(168,446)" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#001a3d">
+    <rect width="52" height="30" rx="7" fill="#2ab6ec"/>
+    <text x="7" y="20">AMEX</text>
+  </g>
+  <g transform="translate(228,446)" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" font-weight="700" fill="#ffffff">
+    <rect width="66" height="30" rx="7" fill="#f16522"/>
+    <text x="6" y="20">DISCOVER</text>
+  </g>
+
+  <!-- pay button -->
+  <rect x="56" y="506" width="308" height="58" rx="18" fill="url(#cta)"/>
+  <text x="210" y="542" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#ffffff">Pay $42.00</text>
+
+  <!-- helper line -->
+  <text x="210" y="596" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#6b7280">
+    Only validity, focus and a PaymentMethod ID reach React
+  </text>
+
+  <!-- home indicator -->
+  <rect x="170" y="702" width="80" height="5" rx="2.5" fill="#3a3c46"/>
+</svg>

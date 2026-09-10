@@ -1,4 +1,11 @@
-# react-native-native-card-form
+![react-native-native-card-form](docs/assets/banner.svg)
+
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Status](https://img.shields.io/badge/status-pre--release%20alpha-orange.svg)
+![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20Android-lightgrey.svg)
+![Expo](https://img.shields.io/badge/Expo-54-000020.svg)
+![React Native](https://img.shields.io/badge/React%20Native-0.81-61dafb.svg)
+![Stripe React Native](https://img.shields.io/badge/%40stripe%2Fstripe--react--native-0.56-635bff.svg)
 
 A composable React Native card form whose PAN, expiry and CVC inputs remain in
 private iOS/Android primitives. React owns layout, labels, errors and logos;
@@ -8,6 +15,26 @@ JavaScript receives only sanitized validity/focus state and a PaymentMethod ID.
 > React Native bridge does not by itself make an integration PCI compliant or
 > eligible for SAQ A. Obtain an assessment for the complete host application.
 > Screenshots and app-switcher previews are the host's responsibility.
+
+<img src="docs/assets/mockup.svg" alt="NativeCardForm rendering card number, expiry and CVC fields, each backed by a private native session" width="260" align="right">
+
+NativeCardForm features:
+
+- 🔒 PAN, expiry and CVC never cross the React Native bridge — only sanitized
+  state and a `paymentMethodId` do
+- 💳 Visa, Mastercard, Amex and Discover detection, Luhn-validated, with
+  `unknown` for everything else
+- ⌨️ Promise-based commands — `tokenize`, `focus`, `reset` — no prop counters,
+  no resolver callbacks, one session per mounted form
+- 🎨 Full appearance control: colors, fonts, weights, alignment and letter
+  spacing, forwarded to the native inputs on both platforms
+- ♿ 48pt/dp minimum touch target, Dynamic Type / font-scale aware, three
+  accessibility elements with localized labels and live error regions
+- 🌍 Fully localized — every label, hint and error comes from your own
+  `NativeCardFormStrings`, with no native fallback copy
+- 📋 Paste supported; copy, cut and sensitive state restoration are disabled
+- 🧩 Expo Module for iOS 15.1+ and your host app's own Android `minSdk`
+- ⚠️ A documented security **boundary**, not a PCI certification — see below
 
 ## Compatibility
 
@@ -91,6 +118,21 @@ family, size, weight, style, alignment and letter spacing are applied by the
 native inputs on both platforms. Invalid native colors are surfaced as
 configuration errors; they are never replaced silently.
 
+### What JavaScript actually receives
+
+Only this ever reaches props, events, state or results — never PAN, expiry,
+CVC, partial values, card suffixes, Stripe parameters or raw Stripe errors:
+
+| | |
+| --- | --- |
+| ✅ | `complete` |
+| ✅ | `empty \| incomplete \| invalid \| valid`, `focused` and `touched`, per field |
+| ✅ | `visa \| mastercard \| amex \| discover \| unknown` |
+| ✅ | a successful `paymentMethodId` |
+| ✅ | a documented, closed error code |
+
+See [`docs/API.md`](docs/API.md) for the full lifecycle and the closed error set.
+
 ## System policies
 
 Paste is supported. Copy/cut and sensitive state restoration are disabled.
@@ -99,7 +141,21 @@ protection, observability redaction, scrolling and any external font limits.
 See [`docs/ACCESSIBILITY.md`](docs/ACCESSIBILITY.md) for the complete host/native
 responsibility split.
 
+## Docs
+
+| | |
+| --- | --- |
+| 📘 [`docs/API.md`](docs/API.md) | Public API, appearance, data boundary, lifecycle and errors |
+| ♿ [`docs/ACCESSIBILITY.md`](docs/ACCESSIBILITY.md) | Accessibility, localization and the host/native responsibility split |
+| 🧪 [`docs/VALIDATION.md`](docs/VALIDATION.md) | Number/brand/expiry/CVC rules and the editing spec — the cross-platform source of truth |
+| 🔧 [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md) | Supported versions and the reproducible clean-example verification commands |
+| 🚀 [`docs/PUBLISHING.md`](docs/PUBLISHING.md) | Public repository export and the release runbook |
+
 ## Distribution
 
 Initial releases are GitHub Release tarballs. npm metadata is ready, but npm
 publishing is intentionally deferred. See [`docs/PUBLISHING.md`](docs/PUBLISHING.md).
+
+## License
+
+[MIT](LICENSE) © Guillermo Pérez ([gperez-eth](https://github.com/gperez-eth))
