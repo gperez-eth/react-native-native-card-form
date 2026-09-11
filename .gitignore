@@ -15,3 +15,8 @@ example/.expo/
 example/node_modules/
 
 .DS_Store
+
+# `swift build` / `swift test` against Package.swift (test-only; see its
+# header comment — it's unrelated to how the package ships via CocoaPods)
+.build/
+.swiftpm/

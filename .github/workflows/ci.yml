@@ -32,10 +32,17 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm install
+      - if: runner.os == 'macOS'
+        run: >-
+          xcodebuild test -scheme NativeCardFormValidation
+          -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest'
       - run: npm pack
       - run: cd example && npm install ../react-native-native-card-form-*.tgz
       - if: runner.os == 'Linux'
-        run: cd example && npx expo prebuild --platform android --no-install && cd android && ./gradlew assembleDebug
+        run: >-
+          cd example && npx expo prebuild --platform android --no-install &&
+          cd android && ./gradlew assembleDebug &&
+          ./gradlew testDebugUnitTest --tests "com.mackenrow.nativecard.*"
       - if: runner.os == 'macOS'
         run: >-
           cd example && npx expo prebuild --platform ios --no-install &&
