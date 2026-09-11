@@ -13,8 +13,8 @@
     { "input": "6500 0000 0000 0002", "status": "valid", "brand": "discover" },
     { "input": "6200 0000 0000 0005", "status": "valid", "brand": "unionpay" },
     { "input": "3530 1113 3330 0000", "status": "valid", "brand": "jcb" },
-    { "input": "6759 6498 2643 8453", "status": "valid", "brand": "maestro" },
-    { "input": "1234 5678 9012 3452", "status": "valid", "brand": "unknown" },
+    { "input": "6759 6498 2643 8453", "status": "valid", "brand": "mastercard" },
+    { "input": "1234 5678 9012 3452", "status": "invalid", "brand": "unknown" },
     { "input": "1234 5678 9012 34567890", "status": "invalid", "brand": "unknown" }
   ],
   "expiry": [
@@ -32,7 +32,7 @@
     { "input": "1234", "brand": "visa", "status": "invalid" },
     { "input": "123", "brand": "amex", "status": "incomplete" },
     { "input": "1234", "brand": "amex", "status": "valid" },
-    { "input": "123", "brand": "maestro", "status": "valid" },
+    { "input": "123", "brand": "mastercard", "status": "valid" },
     { "input": "123", "brand": "jcb", "status": "valid" },
     { "input": "123", "brand": "unionpay", "status": "valid" },
     { "input": "123", "brand": "unknown", "status": "valid" }

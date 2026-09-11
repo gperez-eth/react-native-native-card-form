@@ -79,39 +79,17 @@ internal final class CardSessionRegistry {
     }
   }
 
+  // Same brand this session's number field reports — CardValidation's single
+  // classifier, taken straight from Stripe's own. Only "amex" changes
+  // anything for a caller of this method (the CVC field's max length), so
+  // anything else Stripe doesn't natively distinguish safely collapses to
+  // "unknown".
   func brand(_ sessionId: String?) -> String {
     guard
       let sessionId,
       let value = sessions[sessionId]?.fields[.number]?.value?.sensitiveDigits()
     else { return "unknown" }
-    switch STPCardValidator.brand(forNumber: value) {
-    case .visa: return "visa"
-    case .mastercard: return "mastercard"
-    case .amex: return "amex"
-    case .discover: return "discover"
-    default:
-      if isDiscoverPrefix(value) { return "discover" }
-      if value.hasPrefix("62") { return "unionpay" }
-      if let prefix = Int(value.prefix(4)), (3528...3589).contains(prefix) {
-        return "jcb"
-      }
-      return isMaestroPrefix(value) ? "maestro" : "unknown"
-    }
-  }
-
-  private func isMaestroPrefix(_ value: String) -> Bool {
-    guard let prefix = Int(value.prefix(2)) else { return false }
-    return value.hasPrefix("50") || (56...61).contains(prefix) || (63...69).contains(prefix)
-  }
-
-  private func isDiscoverPrefix(_ value: String) -> Bool {
-    guard let prefix3 = Int(value.prefix(3)), let prefix6 = Int(value.prefix(6)) else {
-      return value.hasPrefix("6011") || value.hasPrefix("65")
-    }
-    return value.hasPrefix("6011") ||
-      value.hasPrefix("65") ||
-      (644...649).contains(prefix3) ||
-      (622126...622925).contains(prefix6)
+    return CardValidation.normalizedBrand(value)
   }
 
   func reset(_ sessionId: String, promise: Promise) {

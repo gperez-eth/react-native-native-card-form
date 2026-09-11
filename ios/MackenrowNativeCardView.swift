@@ -2,13 +2,6 @@ import ExpoModulesCore
 import StripePayments
 import UIKit
 
-private enum FieldStatus: String {
-  case empty
-  case incomplete
-  case invalid
-  case valid
-}
-
 private final class NoExportTextField: UITextField {
   override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
     if action == #selector(copy(_:)) || action == #selector(cut(_:)) {
@@ -360,26 +353,19 @@ public final class MackenrowNativeCardView: ExpoView, UITextFieldDelegate, Sensi
     return value.count
   }
 
+  // The switch below (and CardValidation itself) holds every branch of "is
+  // this PAN/expiry/CVC complete, valid, or invalid" — deliberately pure and
+  // free of `input`/`sessionId` so it's covered by plain XCTest instead of
+  // only being exercised by hand on a device.
   private func intrinsicStatus() -> FieldStatus {
     let value = sensitiveDigits()
-    guard !value.isEmpty else { return .empty }
     switch configuredField {
     case .number:
-      let result = STPCardValidator.validationState(forNumber: value, validatingCardBrand: true)
-      if result == .valid { return .valid }
-      return result == .invalid ? .invalid : .incomplete
+      return CardValidation.numberStatus(value)
     case .expiry:
-      let month = value.count >= 2 ? String(value.prefix(2)) : value
-      let year = value.count > 2 ? String(value.dropFirst(2)) : ""
-      let result = STPCardValidator.validationState(forExpirationYear: year, inMonth: month)
-      if result == .valid { return .valid }
-      return result == .invalid ? .invalid : .incomplete
+      return CardValidation.expiryStatus(value)
     case .cvc:
-      let brand = CardSessionRegistry.shared.brand(sessionId)
-      let stripeBrand: STPCardBrand = brand == "amex" ? .amex : .unknown
-      let result = STPCardValidator.validationState(forCVC: value, cardBrand: stripeBrand)
-      if result == .valid { return .valid }
-      return result == .invalid ? .invalid : .incomplete
+      return CardValidation.cvcStatus(value, brand: CardSessionRegistry.shared.brand(sessionId))
     }
   }
 
@@ -389,42 +375,7 @@ public final class MackenrowNativeCardView: ExpoView, UITextFieldDelegate, Sensi
   }
 
   private func normalizedBrand(_ value: String) -> String {
-    let stripeBrand = STPCardValidator.brand(forNumber: value)
-    switch stripeBrand {
-    case .visa: return "visa"
-    case .mastercard: return "mastercard"
-    case .amex: return "amex"
-    case .discover: return "discover"
-    default:
-      if isDiscoverPrefix(value) { return "discover" }
-      if isUnionPayPrefix(value) { return "unionpay" }
-      if isJcbPrefix(value) { return "jcb" }
-      if isMaestroPrefix(value) { return "maestro" }
-      return "unknown"
-    }
-  }
-
-  private func isDiscoverPrefix(_ value: String) -> Bool {
-    let prefix3 = Int(value.prefix(3))
-    let prefix6 = Int(value.prefix(6))
-    return value.hasPrefix("6011") ||
-      value.hasPrefix("65") ||
-      (prefix3.map { 644...649 ~= $0 } ?? false) ||
-      (prefix6.map { 622126...622925 ~= $0 } ?? false)
-  }
-
-  private func isJcbPrefix(_ value: String) -> Bool {
-    guard let prefix = Int(value.prefix(4)) else { return false }
-    return (3528...3589).contains(prefix)
-  }
-
-  private func isUnionPayPrefix(_ value: String) -> Bool {
-    value.hasPrefix("62")
-  }
-
-  private func isMaestroPrefix(_ value: String) -> Bool {
-    guard let prefix = Int(value.prefix(2)) else { return false }
-    return value.hasPrefix("50") || (56...61).contains(prefix) || (63...69).contains(prefix)
+    CardValidation.normalizedBrand(value)
   }
 
   private func updateProtectedAccessibilityValue() {
