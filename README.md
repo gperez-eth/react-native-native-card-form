@@ -18,7 +18,7 @@ handed back sanitized validity/focus state and a PaymentMethod ID.
 > eligible for SAQ A. Obtain an assessment for the complete host application.
 > Screenshots and app-switcher previews are the host's responsibility.
 
-<img src="docs/assets/mockup.svg" alt="A real checkout sheet with NativeCardForm's card number, expiry and CVC fields — each backed by a private native session" width="260" align="right">
+<img src="docs/assets/checkout-screenshot.png" alt="A real checkout sheet with NativeCardForm's card number, expiry and CVC fields — each backed by a private native session" width="260" align="right">
 
 NativeCardForm features:
 
