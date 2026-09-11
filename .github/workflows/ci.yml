@@ -42,7 +42,7 @@ jobs:
         run: >-
           cd example && npx expo prebuild --platform android --no-install &&
           cd android && ./gradlew assembleDebug &&
-          ./gradlew testDebugUnitTest --tests "com.mackenrow.nativecard.*"
+          ./gradlew :native-card-form:testDebugUnitTest
       - if: runner.os == 'macOS'
         run: >-
           cd example && npx expo prebuild --platform ios --no-install &&
