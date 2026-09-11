@@ -14,19 +14,9 @@ import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
-import com.stripe.android.CardUtils
-import com.stripe.android.model.CardBrand
 import expo.modules.kotlin.AppContext
 import expo.modules.kotlin.viewevent.EventDispatcher
 import expo.modules.kotlin.views.ExpoView
-import java.util.Calendar
-
-private enum class FieldStatus(val wireName: String) {
-  EMPTY("empty"),
-  INCOMPLETE("incomplete"),
-  INVALID("invalid"),
-  VALID("valid")
-}
 
 /**
  * One sensitive input only. React Native owns all layout/chrome/labels/errors.
@@ -318,13 +308,16 @@ internal class MackenrowNativeCardView(
     return value.length
   }
 
+  // The three functions below (and CardValidation itself) hold every branch
+  // of "is this PAN/expiry/CVC complete, valid, or invalid" — deliberately
+  // pure and free of `input`/`sessionId` so they're covered by plain JUnit
+  // tests instead of only being exercised by hand on a device.
   private fun intrinsicStatus(): FieldStatus {
     val value = sensitiveDigits()
-    if (value.isEmpty()) return FieldStatus.EMPTY
     return when (configuredField) {
-      SensitiveField.NUMBER -> numberStatus(value)
-      SensitiveField.EXPIRY -> expiryStatus(value)
-      SensitiveField.CVC -> cvcStatus(value)
+      SensitiveField.NUMBER -> CardValidation.numberStatus(value)
+      SensitiveField.EXPIRY -> CardValidation.expiryStatus(value)
+      SensitiveField.CVC -> CardValidation.cvcStatus(value, CardSessionRegistry.brand(sessionId))
     }
   }
 
@@ -337,92 +330,7 @@ internal class MackenrowNativeCardView(
     }
   }
 
-  private fun numberStatus(value: String): FieldStatus {
-    val stripeBrand = CardUtils.getPossibleCardBrand(value)
-    val expectedLengths = when (normalizedBrand(stripeBrand, value)) {
-      "amex" -> setOf(15)
-      "visa" -> setOf(13, 16, 19)
-      "jcb", "unionpay" -> setOf(16, 17, 18, 19)
-      "maestro" -> (12..19).toSet()
-      else -> setOf(16)
-    }
-    return when {
-      value.length < expectedLengths.min() -> FieldStatus.INCOMPLETE
-      value.length > expectedLengths.max() -> FieldStatus.INVALID
-      value.length !in expectedLengths -> FieldStatus.INCOMPLETE
-      (
-        stripeBrand.isValidCardNumberLength(value) ||
-          normalizedBrand(stripeBrand, value) == "jcb" ||
-          normalizedBrand(stripeBrand, value) == "unionpay" ||
-          normalizedBrand(stripeBrand, value) == "maestro"
-        ) && CardUtils.isValidLuhnNumber(value) -> FieldStatus.VALID
-      normalizedBrand(stripeBrand, value) == "unknown" && CardUtils.isValidLuhnNumber(value) -> FieldStatus.VALID
-      else -> FieldStatus.INVALID
-    }
-  }
-
-  private fun expiryStatus(value: String): FieldStatus {
-    if (value.length < 2) return FieldStatus.INCOMPLETE
-    val month = value.take(2).toIntOrNull() ?: return FieldStatus.INVALID
-    if (month !in 1..12) return FieldStatus.INVALID
-    if (value.length < 4) return FieldStatus.INCOMPLETE
-    val year = value.drop(2).toIntOrNull() ?: return FieldStatus.INVALID
-    val now = Calendar.getInstance()
-    val currentYear = now.get(Calendar.YEAR) % 100
-    val currentMonth = now.get(Calendar.MONTH) + 1
-    return if (year > currentYear || year == currentYear && month >= currentMonth) {
-      FieldStatus.VALID
-    } else {
-      FieldStatus.INVALID
-    }
-  }
-
-  private fun cvcStatus(value: String): FieldStatus {
-    val expected = if (CardSessionRegistry.brand(sessionId) == "amex") 4 else 3
-    return when {
-      value.length < expected -> FieldStatus.INCOMPLETE
-      value.length == expected -> FieldStatus.VALID
-      else -> FieldStatus.INVALID
-    }
-  }
-
-  private fun brand(value: String) = normalizedBrand(CardUtils.getPossibleCardBrand(value), value)
-
-  private fun normalizedBrand(stripeBrand: CardBrand, value: String): String = when (stripeBrand) {
-    CardBrand.Visa -> "visa"
-    CardBrand.MasterCard -> "mastercard"
-    CardBrand.AmericanExpress -> "amex"
-    CardBrand.Discover -> "discover"
-    else -> when {
-      isDiscoverPrefix(value) -> "discover"
-      isJcbPrefix(value) -> "jcb"
-      isUnionPayPrefix(value) -> "unionpay"
-      isMaestroPrefix(value) -> "maestro"
-      else -> "unknown"
-    }
-  }
-
-  private fun isDiscoverPrefix(value: String): Boolean {
-    val prefix3 = value.take(3).toIntOrNull()
-    val prefix6 = value.take(6).toIntOrNull()
-    return value.startsWith("6011") ||
-      value.startsWith("65") ||
-      prefix3 in 644..649 ||
-      prefix6 in 622126..622925
-  }
-
-  private fun isJcbPrefix(value: String): Boolean {
-    val prefix4 = value.take(4).toIntOrNull() ?: return false
-    return prefix4 in 3528..3589
-  }
-
-  private fun isUnionPayPrefix(value: String): Boolean =
-    value.startsWith("62")
-
-  private fun isMaestroPrefix(value: String): Boolean {
-    val prefix2 = value.take(2).toIntOrNull() ?: return false
-    return value.startsWith("50") || prefix2 in 56..59 || prefix2 in 60..61 || prefix2 in 63..69
-  }
+  private fun brand(value: String) = CardValidation.normalizedBrand(value)
 
   private fun emitSanitizedState(force: Boolean = false) {
     val payload = mapOf(

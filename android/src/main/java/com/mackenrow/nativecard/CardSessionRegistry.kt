@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import com.stripe.android.ApiResultCallback
-import com.stripe.android.CardUtils
 import com.stripe.android.PaymentConfiguration
 import com.stripe.android.Stripe
 import com.stripe.android.core.exception.APIConnectionException
@@ -94,6 +93,11 @@ internal object CardSessionRegistry {
     }
   }
 
+  // Same brand this session's number field reports — CardValidation's single
+  // classifier, taken straight from Stripe's own. Only "amex" changes
+  // anything for a caller of this method (the CVC field's max length), so
+  // anything else Stripe doesn't natively distinguish safely collapses to
+  // "unknown".
   @Synchronized
   fun brand(sessionId: String?): String {
     val value = sessionId
@@ -103,23 +107,7 @@ internal object CardSessionRegistry {
       ?.get()
       ?.sensitiveDigits()
       .orEmpty()
-    return when (CardUtils.getPossibleCardBrand(value)) {
-      com.stripe.android.model.CardBrand.AmericanExpress -> "amex"
-      com.stripe.android.model.CardBrand.Visa -> "visa"
-      com.stripe.android.model.CardBrand.MasterCard -> "mastercard"
-      com.stripe.android.model.CardBrand.Discover -> "discover"
-      else -> when {
-        value.startsWith("6011") ||
-          value.startsWith("65") ||
-          value.take(3).toIntOrNull()?.let { it in 644..649 } == true ||
-          value.take(6).toIntOrNull()?.let { it in 622126..622925 } == true -> "discover"
-        value.startsWith("62") -> "unionpay"
-        value.take(4).toIntOrNull()?.let { it in 3528..3589 } == true -> "jcb"
-        value.startsWith("50") ||
-          value.take(2).toIntOrNull()?.let { it in 56..61 || it in 63..69 } == true -> "maestro"
-        else -> "unknown"
-      }
-    }
+    return CardValidation.normalizedBrand(value)
   }
 
   @Synchronized

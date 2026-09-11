@@ -32,10 +32,30 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm install
+      - if: runner.os == 'macOS'
+        run: |
+          xcrun simctl list devices available
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json, sys
+          data = json.load(sys.stdin)["devices"]
+          for runtime, devices in data.items():
+              if "iOS" not in runtime:
+                  continue
+              for d in devices:
+                  if d["isAvailable"]:
+                      print(d["udid"])
+                      sys.exit(0)
+          sys.exit(1)
+          ')
+          echo "Testing against simulator $UDID"
+          xcodebuild test -scheme NativeCardFormValidation -destination "id=$UDID"
       - run: npm pack
       - run: cd example && npm install ../react-native-native-card-form-*.tgz
       - if: runner.os == 'Linux'
-        run: cd example && npx expo prebuild --platform android --no-install && cd android && ./gradlew assembleDebug
+        run: >-
+          cd example && npx expo prebuild --platform android --no-install &&
+          cd android && ./gradlew assembleDebug &&
+          ./gradlew :native-card-form:testDebugUnitTest
       - if: runner.os == 'macOS'
         run: >-
           cd example && npx expo prebuild --platform ios --no-install &&
