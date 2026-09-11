@@ -147,11 +147,11 @@ responsibility split.
 
 | | |
 | --- | --- |
-| 📘 [`docs/API.md`](docs/API.md) | Public API, appearance, data boundary, lifecycle and errors |
-| ♿ [`docs/ACCESSIBILITY.md`](docs/ACCESSIBILITY.md) | Accessibility, localization and the host/native responsibility split |
-| 🧪 [`docs/VALIDATION.md`](docs/VALIDATION.md) | Number/brand/expiry/CVC rules and the editing spec — the cross-platform source of truth |
-| 🔧 [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md) | Supported versions and the reproducible clean-example verification commands |
-| 🚀 [`docs/PUBLISHING.md`](docs/PUBLISHING.md) | Public repository export and the release runbook |
+| [`docs/API.md`](docs/API.md) | Public API, appearance, data boundary, lifecycle and errors |
+| [`docs/ACCESSIBILITY.md`](docs/ACCESSIBILITY.md) | Accessibility, localization and the host/native responsibility split |
+| [`docs/VALIDATION.md`](docs/VALIDATION.md) | Number/brand/expiry/CVC rules and the editing spec — the cross-platform source of truth |
+| [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md) | Supported versions and the reproducible clean-example verification commands |
+| [`docs/PUBLISHING.md`](docs/PUBLISHING.md) | Public repository export and the release runbook |
 
 ## Distribution
 
