@@ -1,5 +1,6 @@
 ![react-native-native-card-form](docs/assets/banner.svg)
 
+[![npm version](https://img.shields.io/npm/v/react-native-native-card-form.svg)](https://www.npmjs.com/package/react-native-native-card-form)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Status](https://img.shields.io/badge/status-pre--release%20alpha-orange.svg)
 ![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20Android-lightgrey.svg)
@@ -7,9 +8,10 @@
 ![React Native](https://img.shields.io/badge/React%20Native-0.81-61dafb.svg)
 ![Stripe React Native](https://img.shields.io/badge/%40stripe%2Fstripe--react--native-0.56-635bff.svg)
 
-A composable React Native card form whose PAN, expiry and CVC inputs remain in
-private iOS/Android primitives. React owns layout, labels, errors and logos;
-JavaScript receives only sanitized validity/focus state and a PaymentMethod ID.
+Hey! 👋 This is a small, cozy React Native card form whose PAN, expiry and CVC
+inputs stay tucked away in private iOS/Android primitives — never in JavaScript.
+React owns the layout, the labels, the errors and the logos; JS only ever gets
+handed back sanitized validity/focus state and a PaymentMethod ID.
 
 > **Security boundary, not PCI certification.** Keeping card values out of the
 > React Native bridge does not by itself make an integration PCI compliant or
@@ -22,8 +24,8 @@ NativeCardForm features:
 
 - 🔒 PAN, expiry and CVC never cross the React Native bridge — only sanitized
   state and a `paymentMethodId` do
-- 💳 Visa, Mastercard, Amex and Discover detection, Luhn-validated, with
-  `unknown` for everything else
+- 💳 Visa, Mastercard, Amex, Discover, JCB and UnionPay detection,
+  Luhn-validated, with `unknown` for everything else
 - ⌨️ Promise-based commands — `tokenize`, `focus`, `reset` — no prop counters,
   no resolver callbacks, one session per mounted form
 - 🎨 Full appearance control: colors, fonts, weights, alignment and letter
@@ -53,11 +55,10 @@ consuming host's value. See
 
 ## Install
 
-Install the release tarball together with its peers:
+It's on npm! 🎉 Grab it together with its peer:
 
 ```sh
-npm install ./react-native-native-card-form-0.1.0-alpha.0.tgz \
-  @stripe/stripe-react-native@0.56
+npm install react-native-native-card-form @stripe/stripe-react-native@0.56
 npx expo prebuild
 ```
 
@@ -104,10 +105,11 @@ const ref = useRef<NativeCardFormRef>(null);
 const { paymentMethodId } = await ref.current!.tokenize();
 ```
 
-Only Visa, Mastercard, Amex, Discover and `unknown` are represented in v0.x.
-See [`docs/API.md`](docs/API.md) for commands, errors and lifecycle.
+Only Visa, Mastercard, Amex, Discover, JCB, UnionPay and `unknown` are
+represented in v0.x. See [`docs/API.md`](docs/API.md) for commands, errors and
+lifecycle.
 
-The default wrapper includes accessible SVG marks for all four named networks.
+The default wrapper includes accessible SVG marks for all six named networks.
 Pass `renderBrand` to replace them. Layout uses normal flex flow: labels and
 errors increase its intrinsic height, and no native coordinate event or fixed
 form height is involved.
@@ -127,7 +129,7 @@ CVC, partial values, card suffixes, Stripe parameters or raw Stripe errors:
 | --- | --- |
 | ✅ | `complete` |
 | ✅ | `empty \| incomplete \| invalid \| valid`, `focused` and `touched`, per field |
-| ✅ | `visa \| mastercard \| amex \| discover \| unknown` |
+| ✅ | `visa \| mastercard \| amex \| discover \| jcb \| unionpay \| unknown` |
 | ✅ | a successful `paymentMethodId` |
 | ✅ | a documented, closed error code |
 
@@ -145,17 +147,22 @@ responsibility split.
 
 | | |
 | --- | --- |
-| 📘 [`docs/API.md`](docs/API.md) | Public API, appearance, data boundary, lifecycle and errors |
-| ♿ [`docs/ACCESSIBILITY.md`](docs/ACCESSIBILITY.md) | Accessibility, localization and the host/native responsibility split |
-| 🧪 [`docs/VALIDATION.md`](docs/VALIDATION.md) | Number/brand/expiry/CVC rules and the editing spec — the cross-platform source of truth |
-| 🔧 [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md) | Supported versions and the reproducible clean-example verification commands |
-| 🚀 [`docs/PUBLISHING.md`](docs/PUBLISHING.md) | Public repository export and the release runbook |
+| [`docs/API.md`](docs/API.md) | Public API, appearance, data boundary, lifecycle and errors |
+| [`docs/ACCESSIBILITY.md`](docs/ACCESSIBILITY.md) | Accessibility, localization and the host/native responsibility split |
+| [`docs/VALIDATION.md`](docs/VALIDATION.md) | Number/brand/expiry/CVC rules and the editing spec — the cross-platform source of truth |
+| [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md) | Supported versions and the reproducible clean-example verification commands |
+| [`docs/PUBLISHING.md`](docs/PUBLISHING.md) | Public repository export and the release runbook |
 
 ## Distribution
 
-Initial releases are GitHub Release tarballs. npm metadata is ready, but npm
-publishing is intentionally deferred. See [`docs/PUBLISHING.md`](docs/PUBLISHING.md).
+📦 Published on npm as
+[`react-native-native-card-form`](https://www.npmjs.com/package/react-native-native-card-form).
+It's still a pre-release alpha, so the API may keep settling a little before
+v1 — pin a version if that matters to you. See
+[`docs/PUBLISHING.md`](docs/PUBLISHING.md) for the release runbook.
 
 ## License
 
 [MIT](LICENSE) © Guillermo Pérez ([gperez-eth](https://github.com/gperez-eth))
+
+Thanks for reading this far — hope it's useful to you! 💙
