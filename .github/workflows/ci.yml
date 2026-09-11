@@ -76,7 +76,12 @@ jobs:
   # smoke test. It does NOT run any unit test: a green check here means "the
   # package installs and compiles into a working app", not "the validation
   # logic is correct" (that's test-android / test-ios above).
+  #
+  # Gated behind the three cheap/fast jobs on purpose: this one alone takes
+  # 10+ minutes per OS (full Gradle/Xcode build), so there's no reason to pay
+  # for it when the lint, the Android suite, or the iOS suite already failed.
   example:
+    needs: [package, test-android, test-ios]
     strategy:
       matrix:
         os: [ubuntu-latest, macos-15]
