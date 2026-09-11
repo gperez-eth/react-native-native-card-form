@@ -1,21 +1,24 @@
-<svg width="420" height="760" viewBox="0 0 420 760" xmlns="http://www.w3.org/2000/svg">
+<svg width="420" height="1150" viewBox="0 0 420 1150" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="phoneBody" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#1c1d24"/>
       <stop offset="100%" stop-color="#101116"/>
     </linearGradient>
     <linearGradient id="screenBg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#101019"/>
-      <stop offset="100%" stop-color="#0a0a10"/>
+      <stop offset="0%" stop-color="#0a0a0e"/>
+      <stop offset="100%" stop-color="#12121e"/>
+    </linearGradient>
+    <linearGradient id="sheetBg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#14141c"/>
+      <stop offset="100%" stop-color="#0e0e16"/>
     </linearGradient>
     <linearGradient id="cta" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#8b5cf6"/>
-      <stop offset="55%" stop-color="#ec4899"/>
-      <stop offset="100%" stop-color="#f97316"/>
+      <stop offset="0%" stop-color="#e74949"/>
+      <stop offset="100%" stop-color="#c73333"/>
     </linearGradient>
-    <linearGradient id="lockChip" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#22c55e"/>
-      <stop offset="100%" stop-color="#16a34a"/>
+    <linearGradient id="logoBadge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e74949"/>
+      <stop offset="100%" stop-color="#8a1f1f"/>
     </linearGradient>
     <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
       <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000000" flood-opacity="0.45"/>
@@ -24,16 +27,16 @@
 
   <!-- phone body -->
   <g filter="url(#softShadow)">
-    <rect x="20" y="20" width="380" height="720" rx="46" fill="url(#phoneBody)"/>
-    <rect x="30" y="30" width="360" height="700" rx="38" fill="url(#screenBg)"/>
+    <rect x="20" y="20" width="380" height="1020" rx="46" fill="url(#phoneBody)"/>
+    <rect x="30" y="30" width="360" height="1000" rx="38" fill="url(#screenBg)"/>
   </g>
 
-  <!-- notch -->
-  <rect x="160" y="30" width="100" height="26" rx="13" fill="#101116"/>
+  <!-- dynamic island -->
+  <rect x="175" y="34" width="70" height="22" rx="11" fill="#101116"/>
 
   <!-- status bar -->
-  <text x="58" y="78" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" fill="#f2f3f6">9:41</text>
-  <g transform="translate(296,60)">
+  <text x="58" y="78" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" font-weight="700" fill="#f2f3f6">10:49</text>
+  <g transform="translate(288,60)">
     <rect x="0" y="10" width="4" height="6" rx="1" fill="#f2f3f6"/>
     <rect x="6" y="7" width="4" height="9" rx="1" fill="#f2f3f6"/>
     <rect x="12" y="4" width="4" height="12" rx="1" fill="#f2f3f6"/>
@@ -43,63 +46,96 @@
     <rect x="48" y="4" width="3" height="4" rx="1" fill="#f2f3f6"/>
   </g>
 
-  <!-- header -->
-  <text x="58" y="132" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="#f5f6fa">Payment</text>
-  <text x="58" y="160" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="15" fill="#9aa0ad">Card details are entered below</text>
+  <!-- host screen peeking above the sheet (the cart) -->
+  <rect x="50" y="96" width="32" height="32" rx="10" fill="#1c1d24" stroke="#2a2c37" stroke-width="1.2"/>
+  <text x="66" y="118" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="17" fill="#9aa0ad">&#215;</text>
+  <text x="210" y="120" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#f5f6fa">Tu carrito</text>
 
-  <!-- card number field -->
-  <text x="58" y="204" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#c7cad6">CARD NUMBER</text>
-  <rect x="56" y="216" width="308" height="56" rx="14" fill="#181923" stroke="#2a2c37" stroke-width="1.5"/>
-  <text x="76" y="251" font-family="Menlo, Consolas, monospace" font-size="20" letter-spacing="3" fill="#eef0f4">•••• •••• •••• ••••</text>
-  <g transform="translate(322,232)">
-    <rect width="26" height="26" rx="8" fill="url(#lockChip)"/>
-    <path d="M13 8.5c-2.2 0-3.6 1.5-3.6 3.6v1.2H9c-.7 0-1.2.5-1.2 1.2v5c0 .7.5 1.2 1.2 1.2h8c.7 0 1.2-.5 1.2-1.2v-5c0-.7-.5-1.2-1.2-1.2h-.4v-1.2c0-2.1-1.4-3.6-3.6-3.6zm0 1.7c1.1 0 1.9.8 1.9 1.9v1.2h-3.8v-1.2c0-1.1.8-1.9 1.9-1.9z"
-          fill="#ffffff"/>
+  <g opacity="0.35">
+    <rect x="50" y="150" width="46" height="46" rx="9" fill="#1c1d24"/>
+    <text x="106" y="169" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" fill="#9aa0ad">Paquete 1 &#183; Un d&#237;a sin</text>
+    <text x="106" y="188" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" fill="#9aa0ad">alojamiento</text>
   </g>
+  <line x1="50" y1="214" x2="370" y2="214" stroke="#22242e" stroke-width="1"/>
 
-  <!-- expiry + cvc -->
-  <text x="58" y="304" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#c7cad6">EXPIRY</text>
-  <rect x="56" y="316" width="140" height="52" rx="14" fill="#181923" stroke="#2a2c37" stroke-width="1.5"/>
-  <text x="76" y="349" font-family="Menlo, Consolas, monospace" font-size="19" fill="#eef0f4">12 / 29</text>
+  <!-- checkout sheet (rounded top corners only) -->
+  <path d="M58,234 H362 Q390,234 390,262 V1030 H30 V262 Q30,234 58,234 Z" fill="url(#sheetBg)"/>
+  <rect x="195" y="248" width="30" height="4" rx="2" fill="#4a4c58"/>
 
-  <text x="224" y="304" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#c7cad6">CVC</text>
-  <rect x="224" y="316" width="140" height="52" rx="14" fill="#181923" stroke="#2a2c37" stroke-width="1.5"/>
-  <text x="244" y="349" font-family="Menlo, Consolas, monospace" font-size="19" letter-spacing="4" fill="#eef0f4">•••</text>
+  <!-- ordered package row -->
+  <rect x="54" y="268" width="52" height="52" rx="12" fill="url(#logoBadge)"/>
+  <circle cx="80" cy="286" r="9" fill="none" stroke="#ffffff" stroke-opacity="0.85" stroke-width="1.4"/>
+  <path d="M80 281 l2.4 4.6 h-4.8 z" fill="#ffffff" fill-opacity="0.85"/>
+  <text x="80" y="309" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="7.5" font-weight="700" fill="#ffffff" fill-opacity="0.9">LOS TRES</text>
+  <text x="118" y="290" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#f5f6fa">Paquete 3 &#183; Tres d&#237;as</text>
+  <text x="366" y="290" text-anchor="end" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#f5f6fa">650.00 &#8364;</text>
+  <line x1="54" y1="336" x2="366" y2="336" stroke="#22242e" stroke-width="1"/>
 
-  <!-- native-boundary chip -->
-  <rect x="56" y="392" width="308" height="34" rx="17" fill="#132018" stroke="#1e3a2a" stroke-width="1.5"/>
-  <circle cx="76" cy="409" r="5" fill="#22c55e"/>
-  <text x="90" y="414" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#8fe3ab">
-    PAN never reaches JavaScript
-  </text>
+  <!-- delivery address -->
+  <path transform="translate(54,354) scale(1.05)" d="M9 1c-3.3 0-6 2.6-6 6 0 4.5 6 10 6 10s6-5.5 6-10c0-3.4-2.7-6-6-6zm0 8.2c-1.2 0-2.2-1-2.2-2.2S7.8 4.8 9 4.8s2.2 1 2.2 2.2S10.2 9.2 9 9.2z" fill="#9aa0ad"/>
+  <text x="80" y="370" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#9aa0ad">Direcci&#243;n de entrega</text>
+  <text x="54" y="400" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#f5f6fa">Casa</text>
+  <text x="54" y="421" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#9aa0ad">Calle Anna Frank 19 C 2A 28052 Madrid Espa&#241;a</text>
+  <text x="54" y="441" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#9aa0ad">28052 Madrid</text>
+  <text x="54" y="461" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#9aa0ad">Espa&#241;a</text>
+  <line x1="54" y1="487" x2="366" y2="487" stroke="#22242e" stroke-width="1"/>
 
-  <!-- brand marks -->
-  <g transform="translate(56,446)" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#ffffff">
-    <rect width="52" height="30" rx="7" fill="#1a1f71"/>
-    <text x="10" y="20">VISA</text>
-  </g>
-  <g transform="translate(116,446)">
-    <circle cx="15" cy="15" r="15" fill="#eb001b" opacity="0.9"/>
-    <circle cx="29" cy="15" r="15" fill="#f79e1b" opacity="0.85"/>
-  </g>
-  <g transform="translate(168,446)" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#001a3d">
-    <rect width="52" height="30" rx="7" fill="#2ab6ec"/>
-    <text x="7" y="20">AMEX</text>
-  </g>
-  <g transform="translate(228,446)" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" font-weight="700" fill="#ffffff">
-    <rect width="66" height="30" rx="7" fill="#f16522"/>
-    <text x="6" y="20">DISCOVER</text>
-  </g>
+  <!-- payment method -->
+  <text x="54" y="513" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#9aa0ad">Forma de pago</text>
+
+  <!-- selected: card -->
+  <rect x="54" y="524" width="312" height="64" rx="14" fill="#2a1518" stroke="#e74949" stroke-opacity="0.55" stroke-width="1.5"/>
+  <rect x="70" y="540" width="34" height="24" rx="6" fill="#ececec"/>
+  <rect x="76" y="545" width="9" height="7" rx="1.5" fill="#d4af37"/>
+  <rect x="76" y="556" width="22" height="2.4" rx="1.2" fill="#cfcfcf"/>
+  <text x="118" y="562" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#f5f6fa">Tarjeta</text>
+  <circle cx="342" cy="556" r="11" fill="none" stroke="#e74949" stroke-width="1.8"/>
+  <circle cx="342" cy="556" r="5" fill="#e74949"/>
+
+  <!-- unselected: Apple Pay -->
+  <rect x="54" y="600" width="312" height="64" rx="14" fill="#181923" stroke="#2a2c37" stroke-width="1.2"/>
+  <rect x="70" y="616" width="42" height="24" rx="6" fill="#ffffff"/>
+  <path transform="translate(75,619) scale(0.62)" d="M12.5 6.9c-.9.1-1.9.6-2.5 1.3-.6.6-1.1 1.6-.9 2.5.9.1 1.9-.5 2.5-1.2.6-.7 1-1.6.9-2.6zm2.6 4.4c-1.4-.1-2.5.8-3.2.8-.7 0-1.7-.8-2.8-.8-1.4 0-2.7.8-3.4 2.1-1.5 2.5-.4 6.3 1.1 8.3.7 1 1.6 2.1 2.7 2.1 1.1 0 1.5-.7 2.8-.7s1.7.7 2.8.7c1.2 0 1.9-1 2.6-2 .8-1.2 1.2-2.3 1.2-2.4-.1 0-2.3-.9-2.3-3.5 0-2.2 1.8-3.2 1.9-3.3-1-1.5-2.6-1.7-3.2-1.7z" fill="#101116"/>
+  <text x="93" y="634" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="10" font-weight="700" font-style="italic" fill="#101116">Pay</text>
+  <text x="124" y="638" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#f5f6fa">Apple Pay</text>
+  <circle cx="342" cy="632" r="11" fill="none" stroke="#5a5c68" stroke-width="1.6"/>
+
+  <!-- the native card form itself: number, expiry, cvc -->
+  <text x="54" y="706" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" fill="#9aa0ad">N&#250;mero de tarjeta</text>
+  <rect x="54" y="718" width="312" height="56" rx="14" fill="#14151c" stroke="#22c55e" stroke-width="1.6"/>
+  <text x="74" y="753" font-family="Menlo, Consolas, monospace" font-size="18" letter-spacing="1" fill="#f5f6fa">4092 7212 5864 9260</text>
+  <rect x="308" y="733" width="44" height="26" rx="5" fill="#1a1f71"/>
+  <text x="330" y="750" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" font-weight="700" font-style="italic" fill="#ffffff">VISA</text>
+
+  <text x="54" y="797" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="11" fill="#9aa0ad">Fecha de caducidad</text>
+  <rect x="54" y="808" width="148" height="52" rx="14" fill="#14151c" stroke="#22c55e" stroke-width="1.6"/>
+  <text x="74" y="840" font-family="Menlo, Consolas, monospace" font-size="17" fill="#f5f6fa">02/30</text>
+  <path d="M178,834 l5,5 l11,-11" fill="none" stroke="#22c55e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <text x="226" y="797" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#9aa0ad">CVC</text>
+  <rect x="226" y="808" width="140" height="52" rx="14" fill="#14151c" stroke="#22c55e" stroke-width="1.6"/>
+  <text x="246" y="840" font-family="Menlo, Consolas, monospace" font-size="18" letter-spacing="2.5" fill="#f5f6fa">&#8226;&#8226;&#8226;</text>
+  <path d="M338,834 l5,5 l11,-11" fill="none" stroke="#22c55e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <line x1="54" y1="888" x2="366" y2="888" stroke="#22242e" stroke-width="1"/>
+  <text x="54" y="920" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="15" fill="#9aa0ad">Total</text>
+  <text x="366" y="922" text-anchor="end" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#f5f6fa">750.00 &#8364;</text>
 
   <!-- pay button -->
-  <rect x="56" y="506" width="308" height="58" rx="18" fill="url(#cta)"/>
-  <text x="210" y="542" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#ffffff">Pay $42.00</text>
-
-  <!-- helper line -->
-  <text x="210" y="596" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#6b7280">
-    Only validity, focus and a PaymentMethod ID reach React
-  </text>
+  <rect x="54" y="946" width="312" height="58" rx="18" fill="url(#cta)"/>
+  <text x="210" y="982" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#ffffff">Pagar 750.00 &#8364;</text>
 
   <!-- home indicator -->
-  <rect x="170" y="702" width="80" height="5" rx="2.5" fill="#3a3c46"/>
+  <rect x="185" y="1010" width="50" height="5" rx="2.5" fill="#3a3c46"/>
+
+  <!-- caption: what's actually native -->
+  <text x="210" y="1072" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14" font-weight="600" fill="#c7cad6">
+    N&#250;mero de tarjeta &#183; Fecha de caducidad &#183; CVC
+  </text>
+  <text x="210" y="1096" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#6b7280">
+    are private native inputs &#8212;
+  </text>
+  <text x="210" y="1116" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="12" fill="#6b7280">
+    PAN, expiry &amp; CVC never reach JavaScript
+  </text>
 </svg>
