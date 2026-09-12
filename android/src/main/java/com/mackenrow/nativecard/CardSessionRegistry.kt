@@ -110,11 +110,17 @@ internal object CardSessionRegistry {
     return CardValidation.normalizedBrand(value)
   }
 
-  @Synchronized
+  // NOT `@Synchronized` any more — see `dispose`, right below, for why: this had
+  // the identical deadlock shape, just reached from `selectMethod` instead of an
+  // unmount.
   fun reset(sessionId: String, promise: Promise) {
-    val session = activeSession(sessionId, promise) ?: return
-    cancelPending(session, "cancelled")
-    liveFields(session).forEach { it.clearSensitiveValue() }
+    val snapshot: List<SensitiveFieldHandle>
+    synchronized(this) {
+      val session = activeSession(sessionId, promise) ?: return
+      cancelPending(session, "cancelled")
+      snapshot = liveFields(session)
+    }
+    mainHandler.post { snapshot.forEach { it.clearSensitiveValue() } }
     promise.resolve(null)
   }
 
@@ -131,17 +137,39 @@ internal object CardSessionRegistry {
     promise.resolve(null)
   }
 
-  @Synchronized
+  /**
+   * NOT `@Synchronized` — this used to be, and it deadlocked the main thread
+   * (reported as an ANR): `dispose` runs on Expo's background `AsyncFunction`
+   * queue, called from `NativeCardForm.tsx`'s own unmount effect, in the SAME
+   * commit React unmounts the view in. `@Synchronized` wrapped this whole
+   * function, so it held the registry's single lock across
+   * `clearSensitiveValue()` → `emitSanitizedState()` → a Fabric event emit that
+   * needs the main thread's Choreographer to run. If Fabric detached the same
+   * view on the main thread in that same commit — which it does — that thread
+   * hit `unregister`'s OWN `@Synchronized` on the identical lock and blocked,
+   * while this thread sat blocked waiting for the main thread to process the
+   * event it had just emitted: two threads, one lock, each waiting on the
+   * other. Neither `unregister` (a plain map removal) nor `dispose`'s own
+   * bookkeeping needs more than a few instructions under the lock — only
+   * `clearSensitiveValue` reaches back into Fabric, so it is the one thing
+   * that must never run while the lock is held. It runs after, unconditionally
+   * on the main thread via `mainHandler`, matching where `onDetachedFromWindow`
+   * already calls the SAME method directly.
+   */
   fun dispose(sessionId: String, promise: Promise) {
-    val session = sessions.remove(sessionId)
-    if (session == null) {
-      promise.resolve(null)
-      return
+    val snapshot: List<SensitiveFieldHandle>
+    synchronized(this) {
+      val session = sessions.remove(sessionId)
+      if (session == null) {
+        promise.resolve(null)
+        return
+      }
+      session.disposed = true
+      cancelPending(session, "cancelled")
+      snapshot = liveFields(session)
+      session.fields.clear()
     }
-    session.disposed = true
-    cancelPending(session, "cancelled")
-    liveFields(session).forEach { it.clearSensitiveValue() }
-    session.fields.clear()
+    mainHandler.post { snapshot.forEach { it.clearSensitiveValue() } }
     promise.resolve(null)
   }
 
