@@ -54,6 +54,12 @@ internal class MackenrowNativeCardView(
 
   init {
     addView(input, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+    // A plain EditText inflates the host app's `android:editTextBackground`
+    // (AppCompat's Material underline, tinted by colorControlNormal/Activated),
+    // which the host theme doesn't own or expect. React Native owns all
+    // chrome for this field per the class doc above, so strip it — the
+    // Android counterpart of iOS's `input.borderStyle = .none`.
+    input.background = null
     minimumHeight = dp(48)
     input.minHeight = dp(48)
     input.setSingleLine(true)
