@@ -47,6 +47,7 @@
     "prepack": "expo-module prepare",
     "check:validation": "node scripts/validation-fixtures.js",
     "check:tarball": "node scripts/tarball-audit.js",
+    "check:threading": "node scripts/thread-confinement-check.js",
     "verify:android": "node scripts/verify-clean-example.js android",
     "verify:ios": "node scripts/verify-clean-example.js ios"
   },

@@ -34,7 +34,7 @@ import type {
 } from './types';
 
 interface NativeCardSessionModule {
-  ensureSession(sessionId: string): void;
+  ensureSession(sessionId: string): Promise<void>;
   tokenize(sessionId: string, timeoutMs: number): Promise<TokenizationResult>;
   reset(sessionId: string): Promise<void>;
   focus(sessionId: string, field: CardField): Promise<void>;
@@ -217,7 +217,7 @@ export const NativeCardForm = forwardRef<NativeCardFormRef, NativeCardFormProps>
 
     useEffect(() => {
       disposed.current = false;
-      NativeModule.ensureSession(sessionId);
+      void NativeModule.ensureSession(sessionId).catch(() => undefined);
       if (autoFocus) {
         requestAnimationFrame(() => {
           if (!disposed.current) void NativeModule.focus(sessionId, 'number').catch(() => undefined);

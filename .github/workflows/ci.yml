@@ -21,6 +21,7 @@ jobs:
       - run: npm run lint
       - run: npm run check:validation
       - run: npm run check:tarball
+      - run: npm run check:threading
 
   # Real JUnit tests for android/.../CardValidation.kt, run against the
   # actual compiled Stripe Android SDK — not a JS reimplementation of it.

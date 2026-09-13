@@ -5,9 +5,18 @@ public class MackenrowNativeCardModule: Module {
   public func definition() -> ModuleDefinition {
     Name("MackenrowNativeCard")
 
-    Function("ensureSession") { (sessionId: String) in
+    // `AsyncFunction`, not `Function`: Android's twin now needs a Promise to
+    // resolve once `ensure()` has actually run on `Queues.MAIN` (there is no
+    // lock left in `CardSessionRegistry.kt` to make a plain fire-and-forget
+    // dispatch safe there — see that object's own header). The shared TS
+    // signature has to describe ONE contract for both platforms, so this
+    // side returns a Promise too, even though nothing here needed one on its
+    // own: `DispatchQueue.main.async` was already fire-and-forget-safe here,
+    // because it never shared a lock with anything.
+    AsyncFunction("ensureSession") { (sessionId: String, promise: Promise) in
       DispatchQueue.main.async {
         CardSessionRegistry.shared.ensure(sessionId)
+        promise.resolve(nil)
       }
     }
 
