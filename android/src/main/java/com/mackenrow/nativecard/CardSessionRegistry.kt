@@ -38,6 +38,49 @@ internal interface SensitiveFieldHandle {
   fun revealValidationError()
 }
 
+/**
+ * NOTHING in this object is `@Synchronized`, and that is the point, not an
+ * oversight: this registry is now confined to the MAIN THREAD ONLY, the same
+ * design `CardSessionRegistry.swift` already used from day one. Every entry
+ * point runs there:
+ *
+ * - `MackenrowNativeCardModule.kt` chains `.runOnQueue(Queues.MAIN)` on
+ *   `ensureSession`, `tokenize`, `reset`, `focus` and `disposeSession` — the
+ *   same mechanism `expo-image`'s own module uses for its own View-touching
+ *   calls, and the one `ViewDefinitionBuilder` applies automatically to every
+ *   View prop/function for exactly this reason.
+ * - `MackenrowNativeCardView`'s View lifecycle (`onDetachedFromWindow`) and
+ *   its Prop setters are main-thread by Android's own contract — Fabric never
+ *   applies those anywhere else.
+ * - Stripe's own `ApiResultCallback` (`settleSuccess`/`settleFailure`, below)
+ *   — verified by decompiling `payments-core` 21.29.2: `Stripe.dispatchResult`
+ *   wraps every callback invocation in `withContext(Dispatchers.Main)`
+ *   unconditionally, so this was already true before this file existed.
+ *
+ * That confinement is what actually removes the ANR class this file used to
+ * carry, not the locking. A lock only deadlocks when two threads each wait on
+ * the other; take away the second thread and there is nothing left to wait
+ * on. Three functions here (`dispose`, `reset`, `tokenize`) each independently
+ * hit the same shape of bug — hold `@Synchronized`, then call something that
+ * reaches Fabric (`clearSensitiveValue`/`revealValidationError` →
+ * `emitSanitizedState` → an event emit that needs the main thread's
+ * Choreographer) while a `NativeCardForm` unmount was doing the exact same
+ * thing on the main thread via `unregister`'s OWN `@Synchronized` on the
+ * identical lock. The fix applied each time — keep the lock, but manually
+ * carve the Fabric-reaching calls out of the locked section — worked, but it
+ * has to be re-derived, correctly, by a human, for every new function added
+ * here. Moving the confinement to the module boundary removes the need to
+ * derive it at all: there is no other thread in the picture, so there is
+ * nothing a lock could ever be needed for.
+ *
+ * `scripts/thread-confinement-check.js` asserts both halves of this hold: no
+ * `@Synchronized`/`synchronized(` anywhere in this file, and every
+ * `AsyncFunction` declared in the module is chained to `.runOnQueue(Queues.MAIN)`.
+ * A function that forgets that chain fails LOUDLY and immediately the first
+ * time it touches a View or the `sessions` map from the wrong thread — a
+ * `CalledFromWrongThreadException`, not an ANR that only shows up under a
+ * timing window in production.
+ */
 internal object CardSessionRegistry {
   private const val SAFE_MESSAGE = "Native card form operation failed."
   private const val MIN_TIMEOUT_MS = 1_000L
@@ -56,30 +99,29 @@ internal object CardSessionRegistry {
     var disposed: Boolean = false
   )
 
+  // Only ever used to schedule/cancel the tokenize() timeout below — a plain
+  // delayed callback on the main looper, unrelated to the thread-confinement
+  // story in this object's own header.
   private val mainHandler = Handler(Looper.getMainLooper())
   private val sessions = mutableMapOf<String, Session>()
 
-  @Synchronized
   fun ensure(sessionId: String) {
     if (sessionId.isBlank()) return
     val current = sessions[sessionId]
     if (current == null || current.disposed) sessions[sessionId] = Session()
   }
 
-  @Synchronized
   fun register(sessionId: String, field: SensitiveFieldHandle) {
     ensure(sessionId)
     sessions[sessionId]?.fields?.set(field.sensitiveField, WeakReference(field))
   }
 
-  @Synchronized
   fun unregister(sessionId: String, field: SensitiveFieldHandle) {
     val session = sessions[sessionId] ?: return
     val registered = session.fields[field.sensitiveField]?.get()
     if (registered === field) session.fields.remove(field.sensitiveField)
   }
 
-  @Synchronized
   fun focusNext(sessionId: String, field: SensitiveField) {
     val next = when (field) {
       SensitiveField.NUMBER -> SensitiveField.EXPIRY
@@ -98,7 +140,6 @@ internal object CardSessionRegistry {
   // anything for a caller of this method (the CVC field's max length), so
   // anything else Stripe doesn't natively distinguish safely collapses to
   // "unknown".
-  @Synchronized
   fun brand(sessionId: String?): String {
     val value = sessionId
       ?.let { sessions[it] }
@@ -110,21 +151,13 @@ internal object CardSessionRegistry {
     return CardValidation.normalizedBrand(value)
   }
 
-  // NOT `@Synchronized` any more — see `dispose`, right below, for why: this had
-  // the identical deadlock shape, just reached from `selectMethod` instead of an
-  // unmount.
   fun reset(sessionId: String, promise: Promise) {
-    val snapshot: List<SensitiveFieldHandle>
-    synchronized(this) {
-      val session = activeSession(sessionId, promise) ?: return
-      cancelPending(session, "cancelled")
-      snapshot = liveFields(session)
-    }
-    mainHandler.post { snapshot.forEach { it.clearSensitiveValue() } }
+    val session = activeSession(sessionId, promise) ?: return
+    cancelPending(session, "cancelled")
+    liveFields(session).forEach { it.clearSensitiveValue() }
     promise.resolve(null)
   }
 
-  @Synchronized
   fun focus(sessionId: String, fieldName: String, promise: Promise) {
     val session = activeSession(sessionId, promise) ?: return
     val field = SensitiveField.fromWireName(fieldName)
@@ -137,43 +170,19 @@ internal object CardSessionRegistry {
     promise.resolve(null)
   }
 
-  /**
-   * NOT `@Synchronized` — this used to be, and it deadlocked the main thread
-   * (reported as an ANR): `dispose` runs on Expo's background `AsyncFunction`
-   * queue, called from `NativeCardForm.tsx`'s own unmount effect, in the SAME
-   * commit React unmounts the view in. `@Synchronized` wrapped this whole
-   * function, so it held the registry's single lock across
-   * `clearSensitiveValue()` → `emitSanitizedState()` → a Fabric event emit that
-   * needs the main thread's Choreographer to run. If Fabric detached the same
-   * view on the main thread in that same commit — which it does — that thread
-   * hit `unregister`'s OWN `@Synchronized` on the identical lock and blocked,
-   * while this thread sat blocked waiting for the main thread to process the
-   * event it had just emitted: two threads, one lock, each waiting on the
-   * other. Neither `unregister` (a plain map removal) nor `dispose`'s own
-   * bookkeeping needs more than a few instructions under the lock — only
-   * `clearSensitiveValue` reaches back into Fabric, so it is the one thing
-   * that must never run while the lock is held. It runs after, unconditionally
-   * on the main thread via `mainHandler`, matching where `onDetachedFromWindow`
-   * already calls the SAME method directly.
-   */
   fun dispose(sessionId: String, promise: Promise) {
-    val snapshot: List<SensitiveFieldHandle>
-    synchronized(this) {
-      val session = sessions.remove(sessionId)
-      if (session == null) {
-        promise.resolve(null)
-        return
-      }
-      session.disposed = true
-      cancelPending(session, "cancelled")
-      snapshot = liveFields(session)
-      session.fields.clear()
+    val session = sessions.remove(sessionId)
+    if (session == null) {
+      promise.resolve(null)
+      return
     }
-    mainHandler.post { snapshot.forEach { it.clearSensitiveValue() } }
+    session.disposed = true
+    cancelPending(session, "cancelled")
+    liveFields(session).forEach { it.clearSensitiveValue() }
+    session.fields.clear()
     promise.resolve(null)
   }
 
-  @Synchronized
   fun tokenize(context: Context, sessionId: String, requestedTimeoutMs: Int, promise: Promise) {
     val session = activeSession(sessionId, promise) ?: return
     if (session.pending != null) {
@@ -254,13 +263,13 @@ internal object CardSessionRegistry {
     )
   }
 
-  @Synchronized
+  // Stripe delivers this on Dispatchers.Main (see this object's own header) —
+  // the same thread every other function here already runs on.
   private fun settleSuccess(sessionId: String, operationId: String, paymentMethodId: String) {
     val pending = takePending(sessionId, operationId) ?: return
     pending.promise.resolve(mapOf("paymentMethodId" to paymentMethodId))
   }
 
-  @Synchronized
   private fun settleFailure(sessionId: String, operationId: String, code: String) {
     val pending = takePending(sessionId, operationId) ?: return
     reject(pending.promise, code)

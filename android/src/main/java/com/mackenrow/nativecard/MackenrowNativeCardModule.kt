@@ -2,16 +2,28 @@ package com.mackenrow.nativecard
 
 import android.graphics.Color
 import expo.modules.kotlin.Promise
+import expo.modules.kotlin.functions.Queues
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
 
+/**
+ * Every function below that reaches `CardSessionRegistry` is chained to
+ * `.runOnQueue(Queues.MAIN)` — the same mechanism `expo-image`'s own module
+ * uses for its View-touching calls, and the one `ViewDefinitionBuilder`
+ * applies automatically to every prop/function declared inside a `View{}`
+ * block. It is what lets `CardSessionRegistry` itself carry no locks at all:
+ * see that object's own header for why. A new function added here needs
+ * exactly this one thing to stay safe; `scripts/thread-confinement-check.js`
+ * fails the build if it is missing.
+ */
 class MackenrowNativeCardModule : Module() {
   override fun definition() = ModuleDefinition {
     Name("MackenrowNativeCard")
 
-    Function("ensureSession") { sessionId: String ->
+    AsyncFunction("ensureSession") { sessionId: String, promise: Promise ->
       CardSessionRegistry.ensure(sessionId)
-    }
+      promise.resolve(null)
+    }.runOnQueue(Queues.MAIN)
 
     AsyncFunction("tokenize") { sessionId: String, timeoutMs: Int, promise: Promise ->
       val context = appContext.reactContext
@@ -20,19 +32,19 @@ class MackenrowNativeCardModule : Module() {
       } else {
         CardSessionRegistry.tokenize(context, sessionId, timeoutMs, promise)
       }
-    }
+    }.runOnQueue(Queues.MAIN)
 
     AsyncFunction("reset") { sessionId: String, promise: Promise ->
       CardSessionRegistry.reset(sessionId, promise)
-    }
+    }.runOnQueue(Queues.MAIN)
 
     AsyncFunction("focus") { sessionId: String, field: String, promise: Promise ->
       CardSessionRegistry.focus(sessionId, field, promise)
-    }
+    }.runOnQueue(Queues.MAIN)
 
     AsyncFunction("disposeSession") { sessionId: String, promise: Promise ->
       CardSessionRegistry.dispose(sessionId, promise)
-    }
+    }.runOnQueue(Queues.MAIN)
 
     View(MackenrowNativeCardView::class) {
       Events("onStateChange")
