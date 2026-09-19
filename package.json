@@ -1,6 +1,6 @@
 {
   "name": "react-native-native-card-form",
-  "version": "0.1.0-alpha.0",
+  "version": "0.1.0-alpha.1",
   "description": "Composable React Native card form backed by private native Stripe inputs.",
   "license": "MIT",
   "author": "Guillermo Pérez (gperez-eth)",
