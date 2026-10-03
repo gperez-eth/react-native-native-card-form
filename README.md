@@ -4,9 +4,9 @@
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Status](https://img.shields.io/badge/status-pre--release%20alpha-orange.svg)
 ![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20Android-lightgrey.svg)
-![Expo](https://img.shields.io/badge/Expo-54-000020.svg)
-![React Native](https://img.shields.io/badge/React%20Native-0.81-61dafb.svg)
-![Stripe React Native](https://img.shields.io/badge/%40stripe%2Fstripe--react--native-0.56-635bff.svg)
+![Expo](https://img.shields.io/badge/Expo-57-000020.svg)
+![React Native](https://img.shields.io/badge/React%20Native-0.86-61dafb.svg)
+![Stripe React Native](https://img.shields.io/badge/%40stripe%2Fstripe--react--native-0.64-635bff.svg)
 
 Hey! 👋 This is a small, cozy React Native card form whose PAN, expiry and CVC
 inputs stay tucked away in private iOS/Android primitives — never in JavaScript.
@@ -42,10 +42,10 @@ NativeCardForm features:
 
 | Dependency | Supported v0.x baseline |
 | --- | --- |
-| Expo | 54 (development build/CNG) |
-| React Native | 0.81 |
-| `@stripe/stripe-react-native` | 0.56 |
-| iOS | 15.1+ |
+| Expo | 57 (development build/CNG) |
+| React Native | 0.86 |
+| `@stripe/stripe-react-native` | 0.64 |
+| iOS | 16.4+ (Expo SDK 57 minimum) |
 | Android | the host application's `minSdk` |
 
 Expo Go is not supported because this package contains native code. The clean
@@ -58,7 +58,7 @@ consuming host's value. See
 It's on npm! 🎉 Grab it together with its peer:
 
 ```sh
-npm install react-native-native-card-form @stripe/stripe-react-native@0.56
+npm install react-native-native-card-form @stripe/stripe-react-native@0.64
 npx expo prebuild
 ```
 

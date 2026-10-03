@@ -2,8 +2,8 @@ import XCTest
 @testable import CardValidationCore
 
 /// Every expected value here was checked by actually running these against
-/// the real, compiled Stripe iOS SDK (24.25.0, the exact version pinned in
-/// this repo's `ios/Pods`) on a booted simulator — not assumed from reading
+/// the real, compiled Stripe iOS SDK (25.11.0, the exact version pinned in
+/// this repo's `Package.swift`) on a booted simulator — not assumed from reading
 /// `STPCardValidator.swift`/`STPBINController.swift`, even though that
 /// reading is what shaped which cases were worth asserting. See
 /// `docs/VALIDATION.md` for the platform-divergence notes a few of these
@@ -38,7 +38,7 @@ final class CardValidationTests: XCTestCase {
     // STPBINController's hardcoded seed table lists several 13-digit Visa
     // ranges, "413600" among them — unlike Android's CardBrand.Visa, which
     // this package's own JUnit suite shows only validates 16 digits on
-    // stripe-android 21.29.2. This is the iOS half of that documented
+    // stripe-android 23.4.0. This is the iOS half of that documented
     // platform divergence, not a guess: 4136000000008 is Luhn-valid and its
     // prefix is one of the exact ranges in STPBINController.swift.
     XCTAssertEqual(CardValidation.numberStatus("4136000000008"), .valid)

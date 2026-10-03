@@ -14,6 +14,6 @@ Pod::Spec.new do |s|
   s.source         = { :git => 'https://github.com/gperez-eth/react-native-native-card-form.git', :tag => "v#{s.version}" }
   s.source_files   = '*.{h,m,swift}'
   s.dependency 'ExpoModulesCore'
-  s.dependency 'StripePayments', '~> 24.25.0'
+  s.dependency 'StripePayments', '~> 25.11.0'
   s.swift_version  = '5.0'
 end
