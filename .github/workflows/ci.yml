@@ -111,4 +111,4 @@ jobs:
           xcodebuild -workspace NativeCardFormExample.xcworkspace
           -scheme NativeCardFormExample -sdk iphonesimulator
           -destination 'generic/platform=iOS Simulator'
-          IPHONEOS_DEPLOYMENT_TARGET=15.1 CODE_SIGNING_ALLOWED=NO build
+          IPHONEOS_DEPLOYMENT_TARGET=16.4 CODE_SIGNING_ALLOWED=NO build
