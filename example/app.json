@@ -3,7 +3,6 @@
     "name": "NativeCardFormExample",
     "slug": "native-card-form-example",
     "version": "1.0.0",
-    "newArchEnabled": true,
     "android": {
       "package": "com.gperezeth.nativecardformexample"
     },
@@ -25,7 +24,7 @@
             "minSdkVersion": 24
           },
           "ios": {
-            "deploymentTarget": "15.1"
+            "deploymentTarget": "16.4"
           }
         }
       ]

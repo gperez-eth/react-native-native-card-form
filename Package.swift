@@ -14,7 +14,7 @@ let package = Package(
     .library(name: "CardValidationCore", targets: ["CardValidationCore"])
   ],
   dependencies: [
-    .package(url: "https://github.com/stripe/stripe-ios-spm.git", exact: "24.25.0")
+    .package(url: "https://github.com/stripe/stripe-ios-spm.git", exact: "25.11.0")
   ],
   targets: [
     .target(

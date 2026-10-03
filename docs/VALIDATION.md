@@ -114,7 +114,7 @@ before touching either file again:
 
 - **Visa's valid lengths differ by platform.** iOS's hardcoded BIN table
   lists several 13-digit Visa ranges; Android's `CardBrand.Visa` only
-  validates 16 digits on `com.stripe:stripe-android:21.29.2`.
+  validates 16 digits on `com.stripe:stripe-android:23.4.0`.
 - **A brand Stripe can't recognize is always `invalid`, never a Luhn-valid
   pass-through** — even a single digit that matches no known prefix at all.
   `CardBrand.Unknown.isValidCardNumberLength()` on Android returns `false`

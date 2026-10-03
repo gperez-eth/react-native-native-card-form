@@ -6,7 +6,7 @@ import org.junit.Test
 
 /**
  * Every expected value here was checked against the real, compiled
- * `com.stripe:stripe-android:21.29.2` classes before being written down — not
+ * `com.stripe:stripe-android:23.4.0` classes before being written down — not
  * assumed from documentation, not carried over from the custom BIN-prefix
  * heuristic this package used to have. See `docs/VALIDATION.md` for the
  * platform-divergence notes a few of these cases exist to pin down.

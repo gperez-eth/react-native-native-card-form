@@ -4,10 +4,10 @@ Baseline verified for the v0.x prerelease:
 
 | Layer | Version / policy | Verification |
 | --- | --- | --- |
-| Expo | 54 | host and clean-example CNG |
-| React Native | 0.81.4 | New Architecture enabled |
-| Stripe React Native | 0.56.x | peer only; one resolved native SDK graph |
-| iOS | deployment target 15.1+ | pod install and simulator build |
+| Expo | 57 | host and clean-example CNG |
+| React Native | 0.86.3 | New Architecture (the only one since RN 0.82) |
+| Stripe React Native | 0.64.x | peer only; one resolved native SDK graph (Stripe iOS 25.11, Stripe Android 23.4) |
+| iOS | deployment target 16.4+ (Expo SDK 57 minimum; the podspec itself declares 15.1) | pod install and simulator build |
 | Android | host-owned minSdk | example host declares 24; library reads `rootProject.ext.minSdkVersion` |
 
 Expo Go is not supported. Use an Expo development build or bare React Native.
