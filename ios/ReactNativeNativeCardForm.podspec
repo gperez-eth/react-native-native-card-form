@@ -1,6 +1,10 @@
+require 'json'
+
+package = JSON.parse(File.read(File.join(__dir__, '..', 'package.json')))
+
 Pod::Spec.new do |s|
   s.name           = 'ReactNativeNativeCardForm'
-  s.version        = '0.1.0-alpha.0'
+  s.version        = package['version']
   s.summary        = 'Composable React Native card form with private native inputs'
   s.description    = 'React-owned card form layout with native-only sensitive inputs.'
   s.author         = { 'Guillermo Pérez' => 'gperez-eth' }
