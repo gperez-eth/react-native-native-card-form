@@ -24,7 +24,7 @@ android {
 
 dependencies {
   implementation project(':expo-modules-core')
-  implementation 'com.stripe:stripe-android:21.29.2'
+  implementation 'com.stripe:stripe-android:23.4.0'
   // CardValidation.kt touches no android.* API (Stripe's own CardUtils/
   // CardBrand are plain JVM classes), so its tests run as fast local JVM unit
   // tests — no Robolectric, no emulator, no androidTest.

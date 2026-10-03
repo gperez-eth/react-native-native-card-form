@@ -53,7 +53,7 @@ internal interface SensitiveFieldHandle {
  *   its Prop setters are main-thread by Android's own contract — Fabric never
  *   applies those anywhere else.
  * - Stripe's own `ApiResultCallback` (`settleSuccess`/`settleFailure`, below)
- *   — verified by decompiling `payments-core` 21.29.2: `Stripe.dispatchResult`
+ *   — verified by decompiling `payments-core` 23.4.0: `Stripe.dispatchResult`
  *   wraps every callback invocation in `withContext(Dispatchers.Main)`
  *   unconditionally, so this was already true before this file existed.
  *
