@@ -15,6 +15,6 @@
     "expo-dev-client": "~57.0.19",
     "react": "19.2.3",
     "react-native": "0.86.3",
-    "react-native-native-card-form": "file:../react-native-native-card-form-0.1.0-alpha.0.tgz"
+    "react-native-native-card-form": "file:../react-native-native-card-form-0.1.0-alpha.2.tgz"
   }
 }
