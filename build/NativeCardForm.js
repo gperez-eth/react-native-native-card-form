@@ -1,3 +1,4 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { requireNativeModule, requireNativeViewManager } from 'expo-modules-core';
 import React, { forwardRef, useCallback, useEffect, useId, useImperativeHandle, useMemo, useRef, useState, } from 'react';
 import { I18nManager, StyleSheet, Text, useWindowDimensions, View, } from 'react-native';
@@ -42,41 +43,27 @@ function Field({ field, sessionId, state, props, onNativeChange, trailing }) {
     const letterSpacing = typeof inputText?.letterSpacing === 'number'
         ? inputText.letterSpacing
         : undefined;
-    return (<View style={[styles.fieldColumn, appearance?.fieldStyle]}>
-      <Text accessible={false} style={[styles.label, appearance?.labelStyle]}>{label}</Text>
-      <View style={[
-            styles.inputChrome,
-            appearance?.containerStyle,
-            state.focused && state.status === 'valid' && [
-                styles.validFocused,
-                appearance?.validContainerStyle,
-            ],
-            state.focused && state.status !== 'valid' && [
-                styles.focused,
-                appearance?.focusedContainerStyle,
-            ],
-            error && [styles.invalid, appearance?.invalidContainerStyle],
-            props.disabled && [styles.disabled, appearance?.disabledContainerStyle],
-        ]}>
-        <PrivateNativeField accessibilityHint={hint} accessibilityLabel={label} enteredAccessibilityValue={strings.enteredValueLabel} invalidAccessibilityValue={strings.invalidAccessibilityLabel} disabled={props.disabled ?? false} field={field} fontFamily={inputText?.fontFamily} fontSize={fontSize} fontStyle={fontStyle} fontWeight={fontWeight} letterSpacing={letterSpacing} onStateChange={onNativeChange} placeholder={placeholder} placeholderColor={appearance?.placeholderColor ?? '#8A8A93'} cursorColor={appearance?.cursorColor ?? '#E74949'} sessionId={sessionId} style={[
-            styles.nativeInput,
-            appearance?.inputContainerStyle,
-            { minHeight: Math.max(48, 48 * fontScale) },
-        ]} textAlign={textAlign} textColor={textColor}/>
-        {trailing}
-        {field !== 'number' && state.status === 'valid' ? <ValidMark /> : null}
-      </View>
-      {error ? (<Text accessibilityLiveRegion="polite" accessibilityRole="alert" style={[styles.error, appearance?.errorStyle]}>
-          {error}
-        </Text>) : null}
-    </View>);
+    return (_jsxs(View, { style: [styles.fieldColumn, appearance?.fieldStyle], children: [_jsx(Text, { accessible: false, style: [styles.label, appearance?.labelStyle], children: label }), _jsxs(View, { style: [
+                    styles.inputChrome,
+                    appearance?.containerStyle,
+                    state.focused && state.status === 'valid' && [
+                        styles.validFocused,
+                        appearance?.validContainerStyle,
+                    ],
+                    state.focused && state.status !== 'valid' && [
+                        styles.focused,
+                        appearance?.focusedContainerStyle,
+                    ],
+                    error && [styles.invalid, appearance?.invalidContainerStyle],
+                    props.disabled && [styles.disabled, appearance?.disabledContainerStyle],
+                ], children: [_jsx(PrivateNativeField, { accessibilityHint: hint, accessibilityLabel: label, enteredAccessibilityValue: strings.enteredValueLabel, invalidAccessibilityValue: strings.invalidAccessibilityLabel, disabled: props.disabled ?? false, field: field, fontFamily: inputText?.fontFamily, fontSize: fontSize, fontStyle: fontStyle, fontWeight: fontWeight, letterSpacing: letterSpacing, onStateChange: onNativeChange, placeholder: placeholder, placeholderColor: appearance?.placeholderColor ?? '#8A8A93', cursorColor: appearance?.cursorColor ?? '#E74949', sessionId: sessionId, style: [
+                            styles.nativeInput,
+                            appearance?.inputContainerStyle,
+                            { minHeight: Math.max(48, 48 * fontScale) },
+                        ], textAlign: textAlign, textColor: textColor }), trailing, field !== 'number' && state.status === 'valid' ? _jsx(ValidMark, {}) : null] }), error ? (_jsx(Text, { accessibilityLiveRegion: "polite", accessibilityRole: "alert", style: [styles.error, appearance?.errorStyle], children: error })) : null] }));
 }
 function ValidMark() {
-    return (<View accessible={false} pointerEvents="none" style={styles.validMark}>
-      <Svg width={22} height={22} viewBox="0 0 24 24">
-        <Path d="m5 12.5 4.2 4.2L19.5 6.8" fill="none" stroke="#22C55E" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.8}/>
-      </Svg>
-    </View>);
+    return (_jsx(View, { accessible: false, pointerEvents: "none", style: styles.validMark, children: _jsx(Svg, { width: 22, height: 22, viewBox: "0 0 24 24", children: _jsx(Path, { d: "m5 12.5 4.2 4.2L19.5 6.8", fill: "none", stroke: "#22C55E", strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2.8 }) }) }));
 }
 /**
  * Public v0.x wrapper. Sensitive values stay in the three private native fields;
@@ -91,7 +78,7 @@ export const NativeCardForm = forwardRef(function NativeCardForm(props, ref) {
     const [state, setState] = useState(INITIAL_STATE);
     useEffect(() => {
         disposed.current = false;
-        NativeModule.ensureSession(sessionId);
+        void NativeModule.ensureSession(sessionId).catch(() => undefined);
         if (autoFocus) {
             requestAnimationFrame(() => {
                 if (!disposed.current)
@@ -156,15 +143,9 @@ export const NativeCardForm = forwardRef(function NativeCardForm(props, ref) {
         const rendererProps = { brand: state.brand, accessibilityLabel: brandLabel };
         return renderBrand
             ? React.createElement(renderBrand, rendererProps)
-            : <DefaultBrand {...rendererProps}/>;
+            : _jsx(DefaultBrand, { ...rendererProps });
     }, [brandLabel, renderBrand, state.brand]);
-    return (<View style={[styles.form, props.appearance?.formStyle]} testID={testID} accessibilityRole="none">
-        <Field field="number" onNativeChange={updateField} props={props} sessionId={sessionId} state={state.fields.number} trailing={brandNode}/>
-        <View style={[styles.row, props.appearance?.rowStyle]}>
-          <Field field="expiry" onNativeChange={updateField} props={props} sessionId={sessionId} state={state.fields.expiry}/>
-          <Field field="cvc" onNativeChange={updateField} props={props} sessionId={sessionId} state={state.fields.cvc}/>
-        </View>
-      </View>);
+    return (_jsxs(View, { style: [styles.form, props.appearance?.formStyle], testID: testID, accessibilityRole: "none", children: [_jsx(Field, { field: "number", onNativeChange: updateField, props: props, sessionId: sessionId, state: state.fields.number, trailing: brandNode }), _jsxs(View, { style: [styles.row, props.appearance?.rowStyle], children: [_jsx(Field, { field: "expiry", onNativeChange: updateField, props: props, sessionId: sessionId, state: state.fields.expiry }), _jsx(Field, { field: "cvc", onNativeChange: updateField, props: props, sessionId: sessionId, state: state.fields.cvc })] })] }));
 });
 const styles = StyleSheet.create({
     form: {
